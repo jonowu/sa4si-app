@@ -7,8 +7,7 @@ This project is a React Native project using [Expo](https://expo.io/).
 ## Prerequisites
 
 - You will need [NodeJS](https://nodejs.org/) installed on your system.
-- You will need [Yarn](https://yarnpkg.com/lang/en/docs/install/) installed on your system.
-- Install the Expo command line tool globally with: `yarn global add expo-cli`.
+- Install the Expo command line tool globally with: `npm install -g expo-cli`.
 - Install the [Expo app](https://expo.io/) onto your iPhone/Android by accessing it from the app store.
 
 ## Setup
@@ -28,7 +27,7 @@ cd sustainability-app-demo
 Add install dependencies with:
 
 ```
-yarn install
+npm install
 ```
 
 Then start the project with:
