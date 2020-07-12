@@ -1,13 +1,35 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
+import { firebase } from './firebase/config';
+
 function HomeScreen() {
+  const db = firebase.firestore();
+
+  const [users, setUsers] = useState();
+
+  function fetchUsers() {
+    db.collection('users')
+      .orderBy('userId', 'asc')
+      .get()
+      .then((querySnapshot) => {
+        const usersFromFirebase = [];
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+          usersFromFirebase.push(doc.data());
+        });
+        setUsers(usersFromFirebase);
+      });
+  }
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home!</Text>
+      <Button onPress={() => fetchUsers()} title="Show users collection" />
+      <Text>{JSON.stringify(users)}</Text>
     </View>
   );
 }
