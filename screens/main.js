@@ -41,7 +41,7 @@ function SettingsScreen() {
 
 const Tab = createBottomTabNavigator();
 
-function MainScreen() {
+function MainScreen(props) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

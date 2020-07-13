@@ -17,7 +17,9 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {user ? (
-          <MainScreen />
+          <Stack.Screen name="Main">
+            {(props) => <MainScreen {...props} extraData={user} />}
+          </Stack.Screen>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />

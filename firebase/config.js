@@ -3,12 +3,14 @@ import '@firebase/auth';
 import '@firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
+  apiKey: 'AIzaSyDe6dKDga5C2jHxvEcw9mRKDHEQ-xbfokI',
+  authDomain: 'sustainability-app-demo.firebaseapp.com',
+  databaseURL: 'https://sustainability-app-demo.firebaseio.com',
+  projectId: 'sustainability-app-demo',
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export { firebase };
