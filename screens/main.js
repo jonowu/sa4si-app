@@ -3,6 +3,8 @@ import { Text, View, Button } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
+import { firebase } from '../firebase/config';
+
 function HomeScreen() {
   const [users, setUsers] = useState();
 
@@ -10,12 +12,11 @@ function HomeScreen() {
     const db = firebase.firestore();
 
     db.collection('users')
-      .orderBy('userId', 'asc')
       .get()
       .then((querySnapshot) => {
         const usersFromFirebase = [];
         querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+          // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
           usersFromFirebase.push(doc.data());
         });
         setUsers(usersFromFirebase);

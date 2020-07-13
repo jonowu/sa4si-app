@@ -3,6 +3,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import { firebase } from '../firebase/config';
+import { AuthenticatedContext } from '../context/authenticated-context';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ export default function LoginScreen({ navigation }) {
     navigation.navigate('Registration');
   };
 
-  const onLoginPress = () => {
+  const onLoginPress = (value) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -28,7 +29,8 @@ export default function LoginScreen({ navigation }) {
               return;
             }
             const user = firestoreDocument.data();
-            navigation.navigate('Home', { user });
+            // navigation.navigate('Home', { user });
+            value.setUser(user);
           })
           .catch((error) => {
             alert(error);
@@ -61,9 +63,16 @@ export default function LoginScreen({ navigation }) {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
-        <TouchableOpacity style={styles.button} onPress={() => onLoginPress()}>
-          <Text style={styles.buttonTitle}>Log in</Text>
-        </TouchableOpacity>
+        <AuthenticatedContext.Consumer>
+          {(value) => (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => onLoginPress(value)}
+            >
+              <Text style={styles.buttonTitle}>Log in</Text>
+            </TouchableOpacity>
+          )}
+        </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
             Don't have an account?{' '}
