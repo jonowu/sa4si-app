@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { firebase } from '../../firebase/config';
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import Screen from '../../components/screen';
 
 export default function RegistrationScreen({ navigation }) {
   const [fullName, setFullName] = useState('');
@@ -48,7 +49,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen>
       <View style={{ width: '100%' }}>
         <TextInput
           style={styles.input}
@@ -107,16 +108,11 @@ export default function RegistrationScreen({ navigation }) {
           </Text>
         </View>
       </View>
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  title: {},
   logo: {
     flex: 1,
     height: 120,

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import { firebase } from '../../firebase/config';
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import Screen from '../../components/screen';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen>
       <View style={{ width: '100%' }}>
         <TextInput
           style={styles.input}
@@ -82,16 +83,11 @@ export default function LoginScreen({ navigation }) {
           </Text>
         </View>
       </View>
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  title: {},
   logo: {
     flex: 1,
     height: 120,

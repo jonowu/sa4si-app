@@ -1,16 +1,17 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import Screen from '../../components/screen';
 
 function AccountScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Screen style={{ justifyContent: 'center' }}>
       <Text>Settings!</Text>
       <AuthenticatedContext.Consumer>
         {(value) => <Text>Welcome {value.user.fullName}</Text>}
       </AuthenticatedContext.Consumer>
-    </View>
+    </Screen>
   );
 }
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, Button } from 'react-native';
 
 import { firebase } from '../../firebase/config';
+import Screen from '../../components/screen';
 
 function HomeScreen() {
   const [users, setUsers] = useState();
@@ -22,10 +23,10 @@ function HomeScreen() {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Screen style={{ justifyContent: 'center' }}>
       <Text>Home!</Text>
       <Button onPress={() => fetchUsers()} title="Show users collection" />
-    </View>
+    </Screen>
   );
 }
 
