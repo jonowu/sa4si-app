@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   footerView: {
-    flex: 1,
     alignItems: 'center',
     marginTop: 20,
   },
