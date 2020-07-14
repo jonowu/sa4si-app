@@ -8,15 +8,16 @@ import Screen from '../../components/screen';
 function AccountScreen() {
   return (
     <Screen style={{ justifyContent: 'center' }}>
-      <Text>Settings!</Text>
       <AuthenticatedContext.Consumer>
         {(value) => (
           <>
-            {value.user && <Text>Welcome, {value.user.firstName}</Text>}
-            {console.log('helloo', value.user)}
+            {value.user.firstName && (
+              <Text>Welcome, {value.user.firstName}</Text>
+            )}
             <Button
               title="Logout"
               onPress={() => {
+                firebase.auth().signOut();
                 value.setUser(false);
               }}
             ></Button>

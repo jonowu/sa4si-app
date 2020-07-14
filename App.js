@@ -35,10 +35,11 @@ function App() {
       }
     });
   }, []);
-
+  /*
   if (user === false) {
     firebase.auth().signOut();
   }
+  */
 
   if (loading) {
     return <></>;
