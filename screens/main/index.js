@@ -3,7 +3,7 @@ import { Text, View, Button } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import { firebase } from '../firebase/config';
+import { firebase } from '../../firebase/config';
 
 function HomeScreen() {
   const [users, setUsers] = useState();
