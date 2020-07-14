@@ -17,11 +17,11 @@ function HomeScreen() {
       .then((querySnapshot) => {
         const usersFromFirebase = [];
         querySnapshot.forEach((doc) => {
-          // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
           usersFromFirebase.push(doc.data());
         });
         setUsers(usersFromFirebase);
       });
+    alert(JSON.stringify(users));
   }
 
   return (
