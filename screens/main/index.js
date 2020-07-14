@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import { firebase } from '../../firebase/config';
+import { AuthenticatedContext } from '../../context/authenticated-context';
 
 function HomeScreen() {
   const [users, setUsers] = useState();
@@ -27,22 +28,24 @@ function HomeScreen() {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home!</Text>
       <Button onPress={() => fetchUsers()} title="Show users collection" />
-      <Text>{JSON.stringify(users)}</Text>
     </View>
   );
 }
 
-function SettingsScreen() {
+function AccountScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings!</Text>
+      <AuthenticatedContext.Consumer>
+        {(value) => <Text>Welcome {value.user.fullName}</Text>}
+      </AuthenticatedContext.Consumer>
     </View>
   );
 }
 
 const Tab = createBottomTabNavigator();
 
-function MainScreen(props) {
+function MainScreen() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -53,7 +56,7 @@ function MainScreen(props) {
             iconName = focused
               ? 'ios-information-circle'
               : 'ios-information-circle-outline';
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'Account') {
             iconName = focused ? 'ios-list-box' : 'ios-list';
           }
 
@@ -66,7 +69,7 @@ function MainScreen(props) {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );
 }
