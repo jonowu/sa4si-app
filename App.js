@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -11,9 +11,38 @@ import RegistrationScreen from './screens/registration';
 const Stack = createStackNavigator();
 
 function App() {
-  // const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(false);
   // const [isUserAuthenticated, setIsUserAuthenticated] = useState(null);
+
+  useEffect(() => {
+    const usersRef = firebase.firestore().collection('users');
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        usersRef
+          .doc(user.uid)
+          .get()
+          .then((document) => {
+            const userData = document.data();
+            setLoading(false);
+            setUser(userData);
+          })
+          .catch((error) => {
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
+    });
+  }, []);
+
+  if (user === false) {
+    firebase.auth().signOut();
+  }
+
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <AuthenticatedContext.Provider value={{ setUser, user }}>

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Button, Text } from 'react-native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 
 function AccountScreen() {
@@ -9,7 +10,18 @@ function AccountScreen() {
     <Screen style={{ justifyContent: 'center' }}>
       <Text>Settings!</Text>
       <AuthenticatedContext.Consumer>
-        {(value) => <Text>Welcome {value.user.fullName}</Text>}
+        {(value) => (
+          <>
+            {value.user && <Text>Welcome, {value.user.firstName}</Text>}
+            {console.log('helloo', value.user)}
+            <Button
+              title="Logout"
+              onPress={() => {
+                value.setUser(false);
+              }}
+            ></Button>
+          </>
+        )}
       </AuthenticatedContext.Consumer>
     </Screen>
   );

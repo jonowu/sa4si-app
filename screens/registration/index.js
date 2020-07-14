@@ -7,7 +7,8 @@ import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 
 export default function RegistrationScreen({ navigation }) {
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,15 +30,15 @@ export default function RegistrationScreen({ navigation }) {
         const data = {
           id: uid,
           email,
-          fullName,
+          firstName,
+          lastName,
         };
         const usersRef = firebase.firestore().collection('users');
         usersRef
           .doc(uid)
           .set(data)
           .then(() => {
-            // navigation.navigate('Main', { user: data });
-            value.setUser({ user: data });
+            value.setUser(data);
           })
           .catch((error) => {
             alert(error);
@@ -53,10 +54,19 @@ export default function RegistrationScreen({ navigation }) {
       <View style={{ width: '100%' }}>
         <TextInput
           style={styles.input}
-          placeholder="Full Name"
+          placeholder="First Name"
           placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setFullName(text)}
-          value={fullName}
+          onChangeText={(text) => setFirstName(text)}
+          value={firstName}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setLastName(text)}
+          value={lastName}
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
