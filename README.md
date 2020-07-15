@@ -30,8 +30,6 @@ Add install dependencies with:
 npm install
 ```
 
-You will need to create an .env file with some keys in the root folder. Look to .env.example for the keys required.
-
 Then start the project with:
 
 ```
