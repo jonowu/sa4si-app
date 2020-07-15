@@ -5,7 +5,7 @@ import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 
 function HomeScreen() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState(null);
 
   function fetchUsers() {
     const db = firebase.firestore();
