@@ -66,17 +66,14 @@ export default function LoginScreen({ navigation }) {
         />
         <AuthenticatedContext.Consumer>
           {(value) => (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => onLoginPress(value)}
-            >
+            <TouchableOpacity style={styles.button} onPress={() => onLoginPress(value)}>
               <Text style={styles.buttonTitle}>Log in</Text>
             </TouchableOpacity>
           )}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
-            Don't have an account?{' '}
+            Don’t have an account?{' '}
             <Text onPress={onFooterLinkPress} style={styles.footerLink}>
               Sign up
             </Text>

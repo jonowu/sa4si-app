@@ -13,7 +13,6 @@ const Stack = createStackNavigator();
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
-  // const [isUserAuthenticated, setIsUserAuthenticated] = useState(null);
 
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
@@ -29,17 +28,13 @@ function App() {
           })
           .catch((error) => {
             setLoading(false);
+            alert(error);
           });
       } else {
         setLoading(false);
       }
     });
   }, []);
-  /*
-  if (user === false) {
-    firebase.auth().signOut();
-  }
-  */
 
   if (loading) {
     return <></>;
@@ -50,16 +45,11 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator>
           {user ? (
-            <Stack.Screen name="Main">
-              {(props) => <MainScreen {...props} />}
-            </Stack.Screen>
+            <Stack.Screen name="Main">{(props) => <MainScreen {...props} />}</Stack.Screen>
           ) : (
             <>
               <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen
-                name="Registration"
-                component={RegistrationScreen}
-              />
+              <Stack.Screen name="Registration" component={RegistrationScreen} />
             </>
           )}
         </Stack.Navigator>

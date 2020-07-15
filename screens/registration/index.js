@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import { firebase } from '../../firebase/config';
-import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 
 export default function RegistrationScreen({ navigation }) {
@@ -17,9 +16,9 @@ export default function RegistrationScreen({ navigation }) {
     navigation.navigate('Login');
   };
 
-  const onRegisterPress = (value) => {
+  const onRegisterPress = () => {
     if (password !== confirmPassword) {
-      alert("Passwords don't match.");
+      alert('Passwords don’t match.');
       return;
     }
     firebase
@@ -96,16 +95,9 @@ export default function RegistrationScreen({ navigation }) {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
-        <AuthenticatedContext.Consumer>
-          {(value) => (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => onRegisterPress(value)}
-            >
-              <Text style={styles.buttonTitle}>Create account</Text>
-            </TouchableOpacity>
-          )}
-        </AuthenticatedContext.Consumer>
+        <TouchableOpacity style={styles.button} onPress={() => onRegisterPress()}>
+          <Text style={styles.buttonTitle}>Create account</Text>
+        </TouchableOpacity>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
             Already got an account?{' '}

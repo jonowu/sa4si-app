@@ -11,13 +11,12 @@ function MainScreen() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        // eslint-disable-next-line react/display-name
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === 'Home') {
-            iconName = focused
-              ? 'ios-information-circle'
-              : 'ios-information-circle-outline';
+            iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
           } else if (route.name === 'Account') {
             iconName = focused ? 'ios-list-box' : 'ios-list';
           }
