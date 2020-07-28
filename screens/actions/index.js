@@ -46,6 +46,7 @@ function ActionsScreen({ navigation }) {
             })
           }
           checked={completedActions.includes(action.id)}
+          containerStyle={{ width: '100%', margin: 0 }}
         />
       ))}
     </Screen>
