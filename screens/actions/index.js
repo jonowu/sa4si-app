@@ -8,11 +8,13 @@ import Screen from '../../components/screen';
 
 function ActionsScreen({ navigation }) {
   const [actions, setActions] = useState([]);
+  const [completedActions, setCompletedActions] = useState([]);
 
   const value = useContext(AuthenticatedContext);
-  const completedActions = value.user.completedActions;
 
   useEffect(() => {
+    setCompletedActions(value.user.completedActions);
+
     const db = firebase.firestore();
 
     db.collection('actions')
@@ -39,6 +41,8 @@ function ActionsScreen({ navigation }) {
               title: action.title,
               body: action.body,
               id: action.id,
+              userId: value.user.id,
+              completedActions: completedActions,
             })
           }
           checked={completedActions.includes(action.id)}
