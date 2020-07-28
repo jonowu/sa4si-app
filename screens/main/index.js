@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AccountScreen from '../account';
 import ActionsStackScreen from '../actions-stack';
+import SdgsStackScreen from '../sdgs-stack';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +30,7 @@ function MainScreen() {
         inactiveTintColor: 'gray',
       }}
     >
+      <Tab.Screen name="SDGs" component={SdgsStackScreen} />
       <Tab.Screen name="Actions" component={ActionsStackScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
