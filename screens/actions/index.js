@@ -13,7 +13,9 @@ function ActionsScreen({ navigation }) {
   const value = useContext(AuthenticatedContext);
 
   useEffect(() => {
-    setCompletedActions(value.user.completedActions);
+    if (value.user.completedActions) {
+      setCompletedActions(value.user.completedActions);
+    }
 
     const db = firebase.firestore();
 
