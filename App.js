@@ -43,16 +43,14 @@ function App() {
   return (
     <AuthenticatedContext.Provider value={{ setUser, user }}>
       <NavigationContainer>
-        <Stack.Navigator>
-          {user ? (
-            <Stack.Screen name="Main">{(props) => <MainScreen {...props} />}</Stack.Screen>
-          ) : (
-            <>
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="Registration" component={RegistrationScreen} />
-            </>
-          )}
-        </Stack.Navigator>
+        {user ? (
+          <MainScreen />
+        ) : (
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Registration" component={RegistrationScreen} />
+          </Stack.Navigator>
+        )}
       </NavigationContainer>
     </AuthenticatedContext.Provider>
   );
