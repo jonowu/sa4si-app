@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import AccountScreen from '../account';
-import ActionsScreen from '../actions';
+import ActionsStackScreen from '../actions-stack';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +29,7 @@ function MainScreen() {
         inactiveTintColor: 'gray',
       }}
     >
-      <Tab.Screen name="Actions" component={ActionsScreen} />
+      <Tab.Screen name="Actions" component={ActionsStackScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );

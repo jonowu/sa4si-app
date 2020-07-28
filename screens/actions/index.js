@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 
 import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 
-function ActionsScreen() {
+function ActionsScreen({ navigation }) {
   const [actions, setActions] = useState([]);
 
   useEffect(() => {
@@ -25,7 +26,17 @@ function ActionsScreen() {
     <Screen style={{ justifyContent: 'center' }}>
       <Text>Actions!</Text>
       {actions.map((action, i) => (
-        <Text key={i}>{action.title}</Text>
+        <CheckBox
+          key={i}
+          center
+          title={action.title}
+          onPress={() =>
+            navigation.navigate('Action', {
+              title: action.title,
+              body: action.body,
+            })
+          }
+        />
       ))}
     </Screen>
   );
