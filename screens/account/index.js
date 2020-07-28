@@ -11,8 +11,16 @@ function AccountScreen() {
       <AuthenticatedContext.Consumer>
         {(value) => (
           <>
-            {value.user.firstName && (
-              <Text>Welcome, {value.user.firstName}</Text>
+            {value.user.firstName && <Text>Welcome, {value.user.firstName}</Text>}
+            {value.user.completedActions ? (
+              <>
+                <Text>You have completed these actions:</Text>
+                {value.user.completedActions.map((completedAction, i) => (
+                  <Text key={i}>{completedAction}</Text>
+                ))}
+              </>
+            ) : (
+              <Text>You haven’t completed any actions yet!</Text>
             )}
             <Button
               title="Logout"
