@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 import { firebase } from '../../firebase/config';
+import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 
 function ActionsScreen({ navigation }) {
   const [actions, setActions] = useState([]);
+
+  const value = useContext(AuthenticatedContext);
+  const completedActions = value.user.completedActions;
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -34,8 +38,10 @@ function ActionsScreen({ navigation }) {
             navigation.navigate('Action', {
               title: action.title,
               body: action.body,
+              id: action.id,
             })
           }
+          checked={completedActions.includes(action.id)}
         />
       ))}
     </Screen>
