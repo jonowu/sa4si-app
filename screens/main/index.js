@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import AccountScreen from '../account';
-import HomeScreen from '../home';
+import ActionsScreen from '../actions';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ function MainScreen() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Actions') {
             iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
           } else if (route.name === 'Account') {
             iconName = focused ? 'ios-list-box' : 'ios-list';
@@ -29,7 +29,7 @@ function MainScreen() {
         inactiveTintColor: 'gray',
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Actions" component={ActionsScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );
