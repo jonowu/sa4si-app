@@ -40,9 +40,7 @@ function ActionsScreen({ navigation }) {
           title={action.title}
           onPress={() =>
             navigation.navigate('Action', {
-              title: action.title,
-              body: action.body,
-              id: action.id,
+              action: action,
               userId: value.user.id,
               completedActions: completedActions,
             })

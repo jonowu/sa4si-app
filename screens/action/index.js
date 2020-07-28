@@ -5,7 +5,8 @@ import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 
 function ActionScreen({ route, navigation }) {
-  const { id, title, body, userId, completedActions } = route.params;
+  const { action, userId, completedActions } = route.params;
+  const { id, title, body, relatedSdgs } = action;
 
   function completeAction() {
     const newCompletedActions = completedActions.push(id);
@@ -25,6 +26,8 @@ function ActionScreen({ route, navigation }) {
     <Screen style={{ justifyContent: 'center' }}>
       <Text>{title}</Text>
       <Text>{body}</Text>
+      {relatedSdgs && <Text>Related Sdgs: </Text>}
+      {relatedSdgs && relatedSdgs.map((sdg, i) => <Text key={i}>{sdg}</Text>)}
       <Button title="Mark as complete" onPress={() => completeAction()} />
     </Screen>
   );
