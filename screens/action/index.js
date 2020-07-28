@@ -4,6 +4,7 @@ import { Text, Button } from 'react-native';
 import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import SdgListItem from '../../components/sdg-list-item';
 
 function ActionScreen({ route, navigation }) {
   const { action, userId, completedActions } = route.params;
@@ -39,7 +40,7 @@ function ActionScreen({ route, navigation }) {
       <Text>{title}</Text>
       <Text>{body}</Text>
       {relatedSdgs && <Text>Related Sdgs: </Text>}
-      {relatedSdgs && relatedSdgs.map((sdg, i) => <Text key={i}>{sdg}</Text>)}
+      {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
       <Button title="Mark as complete" onPress={() => completeAction()} />
     </Screen>
   );
