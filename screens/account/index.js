@@ -11,6 +11,7 @@ function AccountScreen() {
       <AuthenticatedContext.Consumer>
         {(value) => (
           <>
+            <Text>Verified Status: {firebase.auth().currentUser.emailVerified ? 'verified' : 'unverified'}</Text>
             {value.user.firstName && <Text>Welcome, {value.user.firstName}</Text>}
             {value.user.completedActions ? (
               <>
