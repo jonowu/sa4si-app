@@ -16,7 +16,6 @@ const TileContainer = styled(TouchableOpacity)`
 const TileText = styled(Text)`
   color: white;
   font-size: 25px;
-  margin-horizontal: 15px;
 `;
 
 function SdgsScreen({ navigation }) {
