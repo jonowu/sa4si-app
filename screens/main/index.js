@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import AccountScreen from '../account';
+import ProfileStackScreen from '../profile-stack';
 import ActionsStackScreen from '../actions-stack';
 import SdgsStackScreen from '../sdgs-stack';
 import EventsStackScreen from '../events-stack';
@@ -18,23 +18,27 @@ function MainScreen() {
           let iconName;
 
           if (route.name === 'Actions') {
-            iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
-          } else if (route.name === 'Account') {
             iconName = focused ? 'ios-list-box' : 'ios-list';
+          } else if (route.name === 'Profile') {
+            iconName = 'ios-person';
+          } else if (route.name == 'Events') {
+            iconName = 'ios-calendar';
+          } else if (route.name == 'SDGs') {
+            iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: 'green',
         inactiveTintColor: 'gray',
       }}
     >
       <Tab.Screen name="SDGs" component={SdgsStackScreen} />
       <Tab.Screen name="Actions" component={ActionsStackScreen} />
       <Tab.Screen name="Events" component={EventsStackScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );
 }

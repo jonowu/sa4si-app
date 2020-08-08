@@ -31,7 +31,7 @@ function ActionsScreen({ navigation }) {
   }, []);
 
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text>Actions!</Text>
       {actions.map((action, i) => (
         <CheckBox

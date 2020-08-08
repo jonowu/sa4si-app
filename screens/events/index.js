@@ -27,7 +27,7 @@ const TileTitle = styled(Text)`
 
 function EventsScreen({ navigation }) {
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text style={{ padding: 5 }}>Tap on an Event to learn more!</Text>
       <ScrollView style={{ width: '100%' }}>
         {events.map((event, i) => (

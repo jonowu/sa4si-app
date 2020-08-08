@@ -21,7 +21,7 @@ const TileText = styled(Text)`
 
 function SdgsScreen({ navigation }) {
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text style={{ padding: 5 }}>Tap on an SDG to learn more!</Text>
       <ScrollView style={{ width: '100%' }}>
         {sdgs.map((sdg, i) => (

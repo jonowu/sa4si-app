@@ -7,7 +7,7 @@ function Sdg({ route }) {
   const { sdg } = route.params;
 
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text>Goal {sdg.number}</Text>
       <Text>{sdg.name}</Text>
       <Text>{sdg.description}</Text>

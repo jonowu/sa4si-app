@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 
-function AccountScreen() {
+function ProfileScreen() {
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <AuthenticatedContext.Consumer>
         {(value) => (
           <>
@@ -23,13 +23,6 @@ function AccountScreen() {
             ) : (
               <Text>You haven’t completed any actions yet!</Text>
             )}
-            <Button
-              title="Logout"
-              onPress={() => {
-                firebase.auth().signOut();
-                value.setUser(false);
-              }}
-            ></Button>
           </>
         )}
       </AuthenticatedContext.Consumer>
@@ -37,4 +30,4 @@ function AccountScreen() {
   );
 }
 
-export default AccountScreen;
+export default ProfileScreen;

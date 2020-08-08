@@ -7,7 +7,7 @@ import Screen from '../../components/screen';
 function Event({ route }) {
   const { event } = route.params;
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text>Event {event.number}</Text>
       <Text>{event.name}</Text>
       <Text>{event.description}</Text>

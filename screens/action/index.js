@@ -36,7 +36,7 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <Screen style={{ justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Text>{title}</Text>
       <Text>{body}</Text>
       {relatedSdgs && <Text>Related Sdgs: </Text>}
