@@ -15,7 +15,8 @@
     "babel-plugin-inline-dotenv": "^1.5.0",
     "expo": "~38.0.8",
     "expo-status-bar": "^1.0.2",
-    "firebase": "7.9.0",
+    "firebase": "^7.17.1",
+    "moment": "^2.27.0",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
@@ -29,7 +30,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "@commitlint/cli": "^9.1.1",
+    "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.1",
     "babel-preset-expo": "~8.1.0",
     "dotenv": "^8.2.0",

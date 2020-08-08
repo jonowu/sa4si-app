@@ -2,7 +2,7 @@ import { Text } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 
-import { sdgs } from '../../data';
+import { sdgs } from '../../data/sdgs';
 
 const SdgNumber = styled.Text`
   background-color: ${({ color }) => (color ? color : null)};
