@@ -25,9 +25,6 @@ function App() {
             const userData = document.data();
             setLoading(false);
             setUser(userData);
-            if (user.emailVerified === false) {
-              user.sendEmailVerification();
-            }
           })
           .catch((error) => {
             setLoading(false);
