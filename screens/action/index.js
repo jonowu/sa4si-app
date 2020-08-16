@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Text, Button } from 'react-native';
+import { Text, Button, ScrollView } from 'react-native';
 import axios from 'axios';
+import Markdown from 'react-native-markdown-display';
 
 import Screen from '../../components/screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
@@ -39,12 +40,14 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text>{title}</Text>
-      <Text>{body}</Text>
-      {relatedSdgs && <Text>Related Sdgs: </Text>}
-      {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
-      <Button title="Mark as complete" onPress={() => completeAction()} />
+    <Screen>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <Text>{title}</Text>
+        <Markdown>{body}</Markdown>
+        {relatedSdgs && <Text>Related Sdgs: </Text>}
+        {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
+        <Button title="Mark as complete" onPress={() => completeAction()} />
+      </ScrollView>
     </Screen>
   );
 }
