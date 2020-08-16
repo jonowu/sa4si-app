@@ -40,5 +40,4 @@ expo start
 
 ## Useful links
 
-Expo: https://expo.io/  
-Firebase: https://firebase.google.com/
+Expo: https://expo.io/

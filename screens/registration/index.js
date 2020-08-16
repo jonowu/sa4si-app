@@ -1,12 +1,15 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import { firebase } from '../../firebase/config';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
+import { api } from '../../data';
 
 export default function RegistrationScreen({ navigation }) {
+  const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,46 +20,67 @@ export default function RegistrationScreen({ navigation }) {
     navigation.navigate('Login');
   };
 
-  const onRegisterPress = (value) => {
+  const register = (value) => {
     if (password !== confirmPassword) {
       alert('Passwords don’t match.');
       return;
     }
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+    if (username === '') {
+      alert('Please enter your username.');
+      return;
+    }
+    if (email === '') {
+      alert('Please enter your email.');
+      return;
+    }
+    if (firstName === '') {
+      alert('Please enter your first name.');
+      return;
+    }
+    if (lastName === '') {
+      alert('Please enter your last name.');
+      return;
+    }
+
+    const storeData = async (key, value) => {
+      try {
+        await AsyncStorage.setItem(key, value);
+      } catch (e) {
+        alert('Saving data to storage failed.');
+      }
+    };
+
+    axios
+      .post(`${api}/auth/local/register`, {
+        username: username,
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      })
       .then((response) => {
-        if (response.user && response.user.emailVerified === false) {
-          response.user.sendEmailVerification().then(() => {
-            console.log('Email verification sent to user.');
-          });
-        }
-        const uid = response.user.uid;
-        const data = {
-          id: uid,
-          email,
-          firstName,
-          lastName,
-        };
-        const usersRef = firebase.firestore().collection('users');
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            value.setUser(data);
-          })
-          .catch((error) => {
-            alert(error);
-          });
+        value.setUser({ data: response.data.user, token: response.data.jwt });
+        storeData('token', response.data.jwt);
+        storeData('user', JSON.stringify(response.data.user));
       })
       .catch((error) => {
-        alert(error);
+        error.response.data.message[0].messages.forEach((errMsg) => alert(errMsg.message));
+        console.log('An error occurred:', error.response.data);
       });
   };
 
   return (
     <Screen>
       <View style={{ width: '100%' }}>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+        />
         <TextInput
           style={styles.input}
           placeholder="First Name"
@@ -106,7 +130,7 @@ export default function RegistrationScreen({ navigation }) {
         />
         <AuthenticatedContext.Consumer>
           {(value) => (
-            <TouchableOpacity style={styles.button} onPress={() => onRegisterPress(value)}>
+            <TouchableOpacity style={styles.button} onPress={() => register(value)}>
               <Text style={styles.buttonTitle}>Create account</Text>
             </TouchableOpacity>
           )}

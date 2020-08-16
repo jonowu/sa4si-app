@@ -1,37 +1,40 @@
 import React, { useContext } from 'react';
 import { Text, Button } from 'react-native';
+import axios from 'axios';
 
-import { firebase } from '../../firebase/config';
 import Screen from '../../components/screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import SdgListItem from '../../components/sdg-list-item';
+import { api } from '../../data';
 
 function ActionScreen({ route, navigation }) {
-  const { action, userId, completedActions } = route.params;
+  const { action, completedActions } = route.params;
   const { id, title, body, relatedSdgs } = action;
 
-  const value = useContext(AuthenticatedContext);
+  const authContext = useContext(AuthenticatedContext);
+  const userId = authContext.user.data.id;
+  const token = authContext.user.token;
 
   function completeAction() {
     const newCompletedActions = completedActions.push(id);
 
-    const db = firebase.firestore;
-
-    db()
-      .collection('users')
-      .doc(userId)
-      .update({
-        completedActions: db.FieldValue.arrayUnion(id),
-      });
-
-    db()
-      .collection('users')
-      .doc(userId)
-      .get()
-      .then((document) => {
-        const userData = document.data();
-        value.setUser(userData);
+    axios({
+      method: 'POST',
+      url: `${api}/entries`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        action: id,
+        user: userId,
+      },
+    })
+      .then(() => {
         navigation.navigate('Actions', { completedActions: newCompletedActions });
+      })
+      .catch((error) => {
+        alert(error.response.data.error);
+        console.log('An error occurred:', error.response);
       });
   }
 

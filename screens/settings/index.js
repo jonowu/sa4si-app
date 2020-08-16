@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
-import { firebase } from '../../firebase/config';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 
@@ -22,7 +21,6 @@ const settingsList = [
 ];
 
 function logout(value) {
-  firebase.auth().signOut();
   value.setUser(false);
 }
 

@@ -1,44 +1,42 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import { firebase } from '../../firebase/config';
+import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
+  const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const onFooterLinkPress = () => {
     navigation.navigate('Registration');
   };
 
-  const onLoginPress = (value) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (e) {
+      alert('Saving data to storage failed.');
+    }
+  };
+
+  const login = (value) => {
+    axios
+      .post(`${api}/auth/local`, {
+        identifier: emailOrUsername,
+        password: password,
+      })
       .then((response) => {
-        const uid = response.user.uid;
-        const usersRef = firebase.firestore().collection('users');
-        usersRef
-          .doc(uid)
-          .get()
-          .then((firestoreDocument) => {
-            if (!firestoreDocument.exists) {
-              alert('User does not exist anymore.');
-              return;
-            }
-            const user = firestoreDocument.data();
-            // navigation.navigate('Home', { user });
-            value.setUser(user);
-          })
-          .catch((error) => {
-            alert(error);
-          });
+        value.setUser({ data: response.data.user, token: response.data.jwt });
+        storeData('token', response.data.jwt);
+        storeData('user', JSON.stringify(response.data.user));
       })
       .catch((error) => {
-        alert(error);
+        error.response.data.message[0].messages.forEach((errMsg) => alert(errMsg.message));
       });
   };
 
@@ -47,10 +45,10 @@ export default function LoginScreen({ navigation }) {
       <View style={{ width: '100%' }}>
         <TextInput
           style={styles.input}
-          placeholder="E-mail"
+          placeholder="E-mail or Username"
           placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
+          onChangeText={(text) => setEmailOrUsername(text)}
+          value={emailOrUsername}
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
@@ -66,7 +64,7 @@ export default function LoginScreen({ navigation }) {
         />
         <AuthenticatedContext.Consumer>
           {(value) => (
-            <TouchableOpacity style={styles.button} onPress={() => onLoginPress(value)}>
+            <TouchableOpacity style={styles.button} onPress={() => login(value)}>
               <Text style={styles.buttonTitle}>Log in</Text>
             </TouchableOpacity>
           )}

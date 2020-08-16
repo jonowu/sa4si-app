@@ -1,32 +1,49 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { Text } from 'react-native';
+import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
 
-import { firebase } from '../../firebase/config';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
+import { api } from '../../data';
 
 function ActionsScreen({ navigation }) {
   const [actions, setActions] = useState([]);
   const [completedActions, setCompletedActions] = useState([]);
 
-  const value = useContext(AuthenticatedContext);
+  const authContext = useContext(AuthenticatedContext);
+  const id = authContext.user.data.id;
+  const token = authContext.user.token;
 
   useEffect(() => {
-    if (value.user.completedActions) {
-      setCompletedActions(value.user.completedActions);
-    }
+    axios
+      .get(`${api}/actions`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setActions(response.data);
+      })
+      .catch((error) => {
+        alert(error.response.data.error);
+        console.log('An error occurred:', error.response);
+      });
 
-    const db = firebase.firestore();
-
-    db.collection('actions')
-      .get()
-      .then((querySnapshot) => {
-        const actionsFromFirebase = [];
-        querySnapshot.forEach((doc) => {
-          actionsFromFirebase.push(doc.data());
-        });
-        setActions(actionsFromFirebase);
+    axios
+      .get(`${api}/entries?user=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const entries = response.data;
+        const completedActionIds = entries.map((entry) => entry.action.id);
+        setCompletedActions(completedActionIds);
+      })
+      .catch((error) => {
+        alert(error.response.data.error);
+        console.log('An error occurred:', error.response);
       });
   }, []);
 
@@ -41,7 +58,6 @@ function ActionsScreen({ navigation }) {
           onPress={() =>
             navigation.navigate('Action', {
               action: action,
-              userId: value.user.id,
               completedActions: completedActions,
             })
           }

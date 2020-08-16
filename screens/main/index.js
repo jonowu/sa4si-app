@@ -34,6 +34,7 @@ function MainScreen() {
         activeTintColor: 'green',
         inactiveTintColor: 'gray',
       }}
+      initialRouteName="Actions"
     >
       <Tab.Screen name="SDGs" component={SdgsStackScreen} />
       <Tab.Screen name="Actions" component={ActionsStackScreen} />
