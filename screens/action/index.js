@@ -9,7 +9,7 @@ import SdgListItem from '../../components/sdg-list-item';
 import { api } from '../../data';
 
 function ActionScreen({ route, navigation }) {
-  const { action, completedActions } = route.params;
+  const { action, completedActions, isCompleted } = route.params;
   const { id, title, body, relatedSdgs } = action;
 
   const authContext = useContext(AuthenticatedContext);
@@ -17,26 +17,30 @@ function ActionScreen({ route, navigation }) {
   const token = authContext.user.token;
 
   function completeAction() {
-    const newCompletedActions = completedActions.push(id);
+    if (!isCompleted) {
+      const newCompletedActions = completedActions.push(id);
 
-    axios({
-      method: 'POST',
-      url: `${api}/entries`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        action: id,
-        user: userId,
-      },
-    })
-      .then(() => {
-        navigation.navigate('Actions', { completedActions: newCompletedActions });
+      axios({
+        method: 'POST',
+        url: `${api}/entries`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          action: id,
+          user: userId,
+        },
       })
-      .catch((error) => {
-        alert(error.response.data.error);
-        console.log('An error occurred:', error.response);
-      });
+        .then(() => {
+          navigation.navigate('Actions', { completedActions: newCompletedActions });
+        })
+        .catch((error) => {
+          alert(error.response.data.error);
+          console.log('An error occurred:', error.response);
+        });
+    } else {
+      navigation.navigate('Actions');
+    }
   }
 
   return (

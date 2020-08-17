@@ -1,13 +1,14 @@
-import { CheckBox } from 'react-native-elements';
-import { Text } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 import { api } from '../../data';
+import Checkbox from '../../components/checkbox';
 
 function ActionsScreen({ navigation }) {
+  const [loading, setLoading] = useState(true);
   const [actions, setActions] = useState([]);
   const [completedActions, setCompletedActions] = useState([]);
 
@@ -17,30 +18,27 @@ function ActionsScreen({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`${api}/actions`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setActions(response.data);
-      })
-      .catch((error) => {
-        alert(error.response.data.error);
-        console.log('An error occurred:', error.response);
-      });
-
-    axios
-      .get(`${api}/entries?user=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const entries = response.data;
-        const completedActionIds = entries.map((entry) => entry.action.id);
-        setCompletedActions(completedActionIds);
-      })
+      .all([
+        axios.get(`${api}/actions`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get(`${api}/entries?user=${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ])
+      .then(
+        axios.spread((res1, res2) => {
+          setActions(res1.data);
+          const entries = res2.data;
+          const completedActionIds = entries.map((entry) => entry.action.id);
+          setCompletedActions(completedActionIds);
+          setLoading(false);
+        })
+      )
       .catch((error) => {
         alert(error.response.data.error);
         console.log('An error occurred:', error.response);
@@ -49,22 +47,28 @@ function ActionsScreen({ navigation }) {
 
   return (
     <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Actions!</Text>
-      {actions.map((action, i) => (
-        <CheckBox
-          key={i}
-          center
-          title={action.title}
-          onPress={() =>
-            navigation.navigate('Action', {
-              action: action,
-              completedActions: completedActions,
-            })
-          }
-          checked={completedActions.includes(action.id)}
-          containerStyle={{ width: '100%', margin: 0 }}
-        />
-      ))}
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        actions.map((action, i) => {
+          const isCompleted = completedActions.includes(action.id);
+
+          return (
+            <Checkbox
+              key={i}
+              title={action.title}
+              isCompleted={isCompleted}
+              onPress={() =>
+                navigation.navigate('Action', {
+                  action: action,
+                  isCompleted: isCompleted,
+                  completedActions: completedActions,
+                })
+              }
+            />
+          );
+        })
+      )}
     </Screen>
   );
 }
