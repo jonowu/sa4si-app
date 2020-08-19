@@ -1,37 +1,42 @@
-import { Text, Image } from 'react-native';
 import React from 'react';
-
-import Moment from 'moment';
 import Markdown from 'react-native-markdown-display';
+import Moment from 'moment';
 import styled from 'styled-components/native';
 
-import Screen from '../../components/screen';
-import { ScrollView } from 'react-native-gesture-handler';
+import ChildScreen from '../../components/child-screen';
 
-const ArticleHeader = styled.View`
-  align-items: center;
-  height: 40%;
-  margin: 8px;
+const HeaderContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 4px;
 `;
 
-function Article({ route }) {
+const Heading = styled.Text`
+  text-align: left;
+  font-size: 28px;
+  font-weight: 700;
+  flex: 2;
+`;
+
+const Date = styled.Text`
+  text-align: right;
+  flex: 1;
+`;
+
+const Article = ({ route }) => {
   const { article } = route.params;
-  const { id, title, description, body, created_at, image } = article;
+  const { title, created_at, body, image } = article;
 
   return (
-    <Screen>
-      <ArticleHeader>
-        <Text>Article {id}</Text>
-        <Text>{title}</Text>
-        <Text>{description}</Text>
-        <Text>{Moment(created_at).format('DD/MM/YYYY hh:mm A')}</Text>
-        {image && <Image style={{ width: '50%', height: '70%' }} source={{ uri: image.formats.small.url }}></Image>}
-      </ArticleHeader>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Markdown>{body}</Markdown>
-      </ScrollView>
-    </Screen>
+    <ChildScreen headerImage={{ uri: image.formats.small.url }}>
+      <HeaderContainer>
+        {title && <Heading>{title}</Heading>}
+        {created_at && <Date>{Moment(created_at).format('DD/MM/YYYY')}</Date>}
+      </HeaderContainer>
+      {body && <Markdown>{body}</Markdown>}
+    </ChildScreen>
   );
-}
+};
 
 export default Article;

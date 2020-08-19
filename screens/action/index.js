@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { Text, Button, ScrollView } from 'react-native';
+import { Text, Button } from 'react-native';
 import axios from 'axios';
 import Markdown from 'react-native-markdown-display';
 
-import Screen from '../../components/screen';
+import ChildScreen from '../../components/child-screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import SdgListItem from '../../components/sdg-list-item';
 import { api } from '../../data';
@@ -44,15 +44,12 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <Screen>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Text>{title}</Text>
-        <Markdown>{body}</Markdown>
-        {relatedSdgs && <Text>Related Sdgs: </Text>}
-        {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
-        <Button title="Mark as complete" onPress={() => completeAction()} />
-      </ScrollView>
-    </Screen>
+    <ChildScreen heading={title} headerColor="green">
+      <Markdown>{body}</Markdown>
+      {relatedSdgs && <Text>Related Sdgs: </Text>}
+      {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
+      <Button title="Mark as complete" onPress={() => completeAction()} />
+    </ChildScreen>
   );
 }
 
