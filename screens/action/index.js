@@ -7,6 +7,7 @@ import ChildScreen from '../../components/child-screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import SdgListItem from '../../components/sdg-list-item';
 import { api } from '../../data';
+import share from '../../utils/share';
 
 function ActionScreen({ route, navigation }) {
   const { action, completedActions, isCompleted } = route.params;
@@ -15,6 +16,9 @@ function ActionScreen({ route, navigation }) {
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
   const token = authContext.user.token;
+
+  const shareActionMessage = `#SA4SI - I made a difference by completing the action "${title}"!
+   Download the #SA4SI app to join me!`;
 
   function completeAction() {
     if (!isCompleted) {
@@ -48,7 +52,11 @@ function ActionScreen({ route, navigation }) {
       <Markdown>{body}</Markdown>
       {relatedSdgs && <Text>Related Sdgs: </Text>}
       {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
-      <Button title="Mark as complete" onPress={() => completeAction()} />
+      {!isCompleted ? (
+        <Button title="Mark as complete" onPress={() => completeAction()} />
+      ) : (
+        <Button title="Share Action" onPress={() => share(shareActionMessage)} />
+      )}
     </ChildScreen>
   );
 }
