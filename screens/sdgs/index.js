@@ -1,37 +1,37 @@
-import { Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, Image, FlatList, Dimensions } from 'react-native';
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 import { sdgs } from '../../data/sdgs';
 import Screen from '../../components/screen';
 
-const TileContainer = styled(TouchableOpacity)`
-  background-color: ${(props) => props.color};
-  height: 100px;
+const TileContainer = styled.TouchableOpacity`
+  height: ${Math.floor(Dimensions.get('window').height / 4)}px;
+  width: ${Math.floor(Dimensions.get('window').width / 2.2)}px;
   justify-content: center;
   align-items: center;
-  margin: 5px;
-`;
-
-const TileText = styled(Text)`
-  color: white;
-  font-size: 25px;
-  margin: 5px;
 `;
 
 function SdgsScreen({ navigation }) {
+  const numColumns = 2;
+
+  const Item = ({ sdg }) => (
+    <TileContainer onPress={() => navigation.navigate('SDG', { sdg: sdg })}>
+      <Image source={sdg.src} resizeMode="contain" style={{ height: '100%', width: '100%' }} />
+    </TileContainer>
+  );
+
   return (
-    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+    <Screen style={{ alignItems: 'center' }}>
       <Text style={{ padding: 5 }}>Tap on an SDG to learn more!</Text>
-      <ScrollView style={{ width: '100%' }}>
-        {sdgs.map((sdg, i) => (
-          <TileContainer color={sdg.color} key={i} onPress={() => navigation.navigate('SDG', { sdg: sdg })}>
-            <TileText adjustsFontSizeToFit numberOfLines={1} allowFontScaling>
-              {sdg.name}
-            </TileText>
-          </TileContainer>
-        ))}
-      </ScrollView>
+      <FlatList
+        style={{ width: '100%', paddingHorizontal: 10 }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        data={sdgs}
+        renderItem={({ item }) => <Item sdg={item} />}
+        keyExtractor={(item) => item.number}
+        numColumns={numColumns}
+      />
     </Screen>
   );
 }
