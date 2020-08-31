@@ -1,74 +1,78 @@
-import { ActivityIndicator } from 'react-native';
-import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import { ActivityIndicator, Text } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
-import { api } from '../../data';
 import Checkbox from '../../components/checkbox';
 
 function ActionsScreen({ navigation }) {
-  const [loading, setLoading] = useState(true);
-  const [actions, setActions] = useState([]);
-  const [completedActions, setCompletedActions] = useState([]);
-
   const authContext = useContext(AuthenticatedContext);
   const id = authContext.user.data.id;
-  const token = authContext.user.token;
+
+  const [completedActions, setCompletedActions] = useState([]);
+
+  const GET_USER_ACTIONS = gql`
+    query GetUserActions {
+      actions {
+        id
+        title
+        body
+      }
+      entries(where: { user: { id: ${id} } }) {
+        action {
+          id
+        }
+        user {
+          id
+        }
+      }
+    }
+  `;
+
+  const { loading, error, data = {} } = useQuery(GET_USER_ACTIONS);
+  const { actions, entries } = data;
 
   useEffect(() => {
-    axios
-      .all([
-        axios.get(`${api}/actions`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
-        axios.get(`${api}/entries?user=${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
-      ])
-      .then(
-        axios.spread((res1, res2) => {
-          setActions(res1.data);
-          const entries = res2.data;
-          const completedActionIds = entries.map((entry) => entry.action.id);
-          setCompletedActions(completedActionIds);
-          setLoading(false);
-        })
-      )
-      .catch((error) => {
-        alert(error.response.data.error);
-        console.log('An error occurred:', error.response);
-      });
-  }, []);
+    if (entries) {
+      const completedActionIds = entries.map((entry) => entry.action.id);
+      setCompletedActions(completedActionIds);
+    }
+  }, [data]);
+
+  if (loading) {
+    return (
+      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" />
+      </Screen>
+    );
+  }
+
+  if (error) {
+    console.error(error);
+    return <Text>Error</Text>;
+  }
 
   return (
     <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        actions.map((action, i) => {
-          const isCompleted = completedActions.includes(action.id);
+      {actions.map((action, i) => {
+        const isCompleted = completedActions.includes(action.id);
 
-          return (
-            <Checkbox
-              key={i}
-              title={action.title}
-              isCompleted={isCompleted}
-              onPress={() =>
-                navigation.navigate('Action', {
-                  action: action,
-                  isCompleted: isCompleted,
-                  completedActions: completedActions,
-                })
-              }
-            />
-          );
-        })
-      )}
+        return (
+          <Checkbox
+            key={i}
+            title={action.title}
+            isCompleted={isCompleted}
+            onPress={() =>
+              navigation.navigate('Action', {
+                action: action,
+                isCompleted: isCompleted,
+                completedActions: completedActions,
+              })
+            }
+          />
+        );
+      })}
     </Screen>
   );
 }

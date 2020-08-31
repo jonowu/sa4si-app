@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
         password: password,
       })
       .then((response) => {
-        value.setUser({ data: response.data.user, token: response.data.jwt });
+        value.setUser({ data: response.data.user });
         storeData('token', response.data.jwt);
         storeData('user', JSON.stringify(response.data.user));
       })

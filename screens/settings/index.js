@@ -1,9 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import { View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
+import client from '../../utils/apolloClient';
 
 const settingsList = [
   {
@@ -20,9 +22,12 @@ const settingsList = [
   },
 ];
 
-function logout(value) {
+const logout = async (value) => {
+  await AsyncStorage.removeItem('user');
+  await AsyncStorage.removeItem('token');
+  client.resetStore();
   value.setUser(false);
-}
+};
 
 function SettingsScreen() {
   return (

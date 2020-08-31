@@ -2,11 +2,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState, useEffect } from 'react';
+import { ApolloProvider } from '@apollo/client';
 
 import { AuthenticatedContext } from './context/authenticated-context';
 import LoginScreen from './screens/login';
 import MainScreen from './screens/main';
 import RegistrationScreen from './screens/registration';
+import client from './utils/apolloClient';
 
 const Stack = createStackNavigator();
 
@@ -16,14 +18,12 @@ function App() {
 
   const readData = async () => {
     try {
-      const tokenValue = await AsyncStorage.getItem('token');
       const userValue = await AsyncStorage.getItem('user');
-
-      if (tokenValue !== null && userValue !== null) {
-        setUser({ data: JSON.parse(userValue), token: tokenValue });
+      if (userValue !== null) {
+        setUser({ data: JSON.parse(userValue) });
       }
     } catch (e) {
-      alert('Failed to fetch the data from storage');
+      console.log('Failed to fetch the user data from storage');
     }
   };
 
@@ -37,18 +37,20 @@ function App() {
   }
 
   return (
-    <AuthenticatedContext.Provider value={{ setUser, user }}>
-      <NavigationContainer>
-        {user ? (
-          <MainScreen />
-        ) : (
-          <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
-    </AuthenticatedContext.Provider>
+    <ApolloProvider client={client}>
+      <AuthenticatedContext.Provider value={{ setUser, user }}>
+        <NavigationContainer>
+          {user ? (
+            <MainScreen />
+          ) : (
+            <Stack.Navigator>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Registration" component={RegistrationScreen} />
+            </Stack.Navigator>
+          )}
+        </NavigationContainer>
+      </AuthenticatedContext.Provider>
+    </ApolloProvider>
   );
 }
 
