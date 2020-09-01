@@ -4,11 +4,24 @@ import PropTypes from 'prop-types';
 
 const Checkbox = ({ title, onPress, isCompleted }) => (
   <CheckBox
-    center
+    left
     title={title}
     onPress={() => onPress()}
     checked={isCompleted}
-    containerStyle={{ width: '100%', margin: 0 }}
+    size={42}
+    iconType="material-community"
+    checkedIcon="checkbox-marked-circle-outline"
+    uncheckedIcon="circle-outline"
+    checkedColor="black"
+    uncheckedColor="black"
+    textStyle={{ marginLeft: 20 }}
+    containerStyle={{
+      margin: 0,
+      marginBottom: 10,
+      paddingHorizontal: 40,
+      paddingVertical: 10,
+      borderRadius: 20,
+    }}
   />
 );
 

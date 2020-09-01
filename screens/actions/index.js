@@ -1,10 +1,13 @@
 import { ActivityIndicator, Text } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 import Checkbox from '../../components/checkbox';
+
+const ActionsContainer = styled.View``;
 
 function ActionsScreen({ navigation }) {
   const authContext = useContext(AuthenticatedContext);
@@ -55,24 +58,26 @@ function ActionsScreen({ navigation }) {
 
   return (
     <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
-      {actions.map((action, i) => {
-        const isCompleted = completedActions.includes(action.id);
+      <ActionsContainer>
+        {actions.map((action, i) => {
+          const isCompleted = completedActions.includes(action.id);
 
-        return (
-          <Checkbox
-            key={i}
-            title={action.title}
-            isCompleted={isCompleted}
-            onPress={() =>
-              navigation.navigate('Action', {
-                action: action,
-                isCompleted: isCompleted,
-                completedActions: completedActions,
-              })
-            }
-          />
-        );
-      })}
+          return (
+            <Checkbox
+              key={i}
+              title={action.title}
+              isCompleted={isCompleted}
+              onPress={() =>
+                navigation.navigate('Action', {
+                  action: action,
+                  isCompleted: isCompleted,
+                  completedActions: completedActions,
+                })
+              }
+            />
+          );
+        })}
+      </ActionsContainer>
     </Screen>
   );
 }
