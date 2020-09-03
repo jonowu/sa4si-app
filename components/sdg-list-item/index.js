@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 
@@ -9,14 +9,15 @@ const SdgNumber = styled.Text`
   color: white;
 `;
 
-function SdgListItem({ number }) {
+function SdgListItem({ number, onPress }) {
   const info = sdgs.find((sdg) => sdg.number === number);
 
   return (
-    <Text>
-      <SdgNumber color={info.color}> {number} </SdgNumber>
-      <Text> {info.name}</Text>
-    </Text>
+    <TouchableOpacity onPress={() => onPress()}>
+      <SdgNumber color={info.color}>
+        {number} {info.name}
+      </SdgNumber>
+    </TouchableOpacity>
   );
 }
 

@@ -41,8 +41,15 @@ function ActionScreen({ route, navigation }) {
   return (
     <ChildScreen heading={title} headerColor="green">
       <Markdown>{body}</Markdown>
-      {relatedSdgs && <Text>Related Sdgs: </Text>}
-      {relatedSdgs && relatedSdgs.map((sdgNo, i) => <SdgListItem key={i} number={sdgNo} />)}
+      {relatedSdgs && relatedSdgs.length > 0 && <Text>Related Sdgs: </Text>}
+      {relatedSdgs &&
+        relatedSdgs.map((sdg, i) => (
+          <SdgListItem
+            key={i}
+            number={sdg.id}
+            onPress={() => navigation.navigate('SDGs', { screen: 'SDG', params: { sdgNo: sdg.id } })}
+          />
+        ))}
       {!isCompleted ? (
         <Button title="Mark as complete" onPress={() => completeAction()} />
       ) : (

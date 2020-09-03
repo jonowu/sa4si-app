@@ -21,6 +21,9 @@ function ActionsScreen({ navigation }) {
         id
         title
         body
+        relatedSdgs {
+          id
+        }
       }
       entries(where: { user: { id: ${id} } }) {
         action {

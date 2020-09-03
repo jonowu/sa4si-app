@@ -1,5 +1,6 @@
 const sdgs = [
   {
+    id: 1,
     number: '1',
     name: 'No Poverty',
     description: 'End poverty in all its forms everywhere.',
@@ -7,6 +8,7 @@ const sdgs = [
     src: require('../static/img/sdgs/1.png'),
   },
   {
+    id: 2,
     number: '2',
     name: 'Zero Hunger',
     description: 'End hunger, achieve food security and improved nutrition, and promote sustainable agriculture.',
@@ -14,6 +16,7 @@ const sdgs = [
     src: require('../static/img/sdgs/2.png'),
   },
   {
+    id: 3,
     number: '3',
     name: 'Good Health and Well-being',
     description: 'Ensure healthy lives and promote well-being for all at all ages.',
@@ -21,6 +24,7 @@ const sdgs = [
     src: require('../static/img/sdgs/3.png'),
   },
   {
+    id: 4,
     number: '4',
     name: 'Quality Education',
     description: 'Ensure inclusive and equitable quality education and promote lifelong opportunities for all.',
@@ -28,6 +32,7 @@ const sdgs = [
     src: require('../static/img/sdgs/4.png'),
   },
   {
+    id: 5,
     number: '5',
     name: 'Gender Equality',
     description: 'Achieve gender equality and empower all women and girls.',
@@ -35,6 +40,7 @@ const sdgs = [
     src: require('../static/img/sdgs/5.png'),
   },
   {
+    id: 6,
     number: '6',
     name: 'Clean Water and Sanitation',
     description: 'Ensure availability and sustainable management of water and sanitation for all.',
@@ -42,6 +48,7 @@ const sdgs = [
     src: require('../static/img/sdgs/6.png'),
   },
   {
+    id: 7,
     number: '7',
     name: 'Affordable and Clean Energy',
     description: 'Ensure access to affordable, reliable, sustainable and modern energy for all.',
@@ -49,6 +56,7 @@ const sdgs = [
     src: require('../static/img/sdgs/7.png'),
   },
   {
+    id: 8,
     number: '8',
     name: 'Decent Work and Economic Growth',
     description:
@@ -57,6 +65,7 @@ const sdgs = [
     src: require('../static/img/sdgs/8.png'),
   },
   {
+    id: 9,
     number: '9',
     name: 'Industry, Innovation and Infrastructure',
     description:
@@ -65,6 +74,7 @@ const sdgs = [
     src: require('../static/img/sdgs/9.png'),
   },
   {
+    id: 10,
     number: '10',
     name: 'Reduced Inqualities',
     description: 'Reduce inequality within and among countries.',
@@ -72,6 +82,7 @@ const sdgs = [
     src: require('../static/img/sdgs/10.png'),
   },
   {
+    id: 11,
     number: '11',
     name: 'Sustainable Cities and Communities',
     description: 'Make cities and human settlements inclusive, safe, resilient and sustainable.',
@@ -79,6 +90,7 @@ const sdgs = [
     src: require('../static/img/sdgs/11.png'),
   },
   {
+    id: 12,
     number: '12',
     name: 'Responsible Consumption and Production',
     description: 'Ensure sustainable consumption and production patterns.',
@@ -86,6 +98,7 @@ const sdgs = [
     src: require('../static/img/sdgs/12.png'),
   },
   {
+    id: 13,
     number: '13',
     name: 'Climate Action',
     description: 'Take urgent action to combat climate change and its impacts.',
@@ -93,6 +106,7 @@ const sdgs = [
     src: require('../static/img/sdgs/13.png'),
   },
   {
+    id: 14,
     number: '14',
     name: 'Life below Water',
     description: 'Conserve and sustainably use the oceans, seas and marine resources for sustainable development.    ',
@@ -100,6 +114,7 @@ const sdgs = [
     src: require('../static/img/sdgs/14.png'),
   },
   {
+    id: 15,
     number: '15',
     name: 'Life on Land',
     description:
@@ -108,6 +123,7 @@ const sdgs = [
     src: require('../static/img/sdgs/15.png'),
   },
   {
+    id: 16,
     number: '16',
     name: 'Peace, Justice and Strong Institutions',
     description:
@@ -116,6 +132,7 @@ const sdgs = [
     src: require('../static/img/sdgs/16.png'),
   },
   {
+    id: 17,
     number: '17',
     name: 'Partnership for the Goals',
     description:

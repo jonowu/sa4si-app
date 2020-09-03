@@ -1,8 +1,6 @@
-import { ActivityIndicator, Text, Image, FlatList, Dimensions } from 'react-native';
+import { Text, Image, FlatList, Dimensions } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
-import { gql, useQuery } from '@apollo/client';
-import _ from 'lodash';
 
 import { sdgs } from '../../data/sdgs';
 import Screen from '../../components/screen';
@@ -16,41 +14,12 @@ const TileContainer = styled.TouchableOpacity`
 
 const numColumns = 2;
 
-const GET_SDGS = gql`
-  query GetSdgs {
-    sdgs {
-      id
-      body
-    }
-  }
-`;
-
 function SdgsScreen({ navigation }) {
-  const { loading, error, data = {} } = useQuery(GET_SDGS);
-  const sdgData = data.sdgs;
-
   const Item = ({ sdg }) => (
-    <TileContainer onPress={() => navigation.navigate('SDG', { sdg: sdg })}>
+    <TileContainer onPress={() => navigation.navigate('SDG', { sdgNo: sdg.id })}>
       <Image source={sdg.src} resizeMode="contain" style={{ height: '100%', width: '100%' }} />
     </TileContainer>
   );
-
-  const mergedSdgs = _.map(sdgs, (item) => {
-    return _.assign(item, _.find(sdgData, ['id', item.number]));
-  });
-
-  if (loading) {
-    return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
-      </Screen>
-    );
-  }
-
-  if (error) {
-    console.error(error);
-    return <Text>Error</Text>;
-  }
 
   return (
     <Screen style={{ alignItems: 'center' }}>
@@ -58,9 +27,9 @@ function SdgsScreen({ navigation }) {
       <FlatList
         style={{ width: '100%', paddingHorizontal: 10 }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
-        data={mergedSdgs}
+        data={sdgs}
         renderItem={({ item }) => <Item sdg={item} />}
-        keyExtractor={(item) => item.number}
+        keyExtractor={(item) => item.id}
         numColumns={numColumns}
       />
     </Screen>

@@ -35,6 +35,7 @@ function MainScreen() {
         inactiveTintColor: 'gray',
       }}
       initialRouteName="Actions"
+      lazy={false}
     >
       <Tab.Screen name="SDGs" component={SdgsStackScreen} />
       <Tab.Screen name="Actions" component={ActionsStackScreen} />
