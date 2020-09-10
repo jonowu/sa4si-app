@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 
 import ProfileScreen from '../profile';
 import SettingsScreen from '../settings';
+import LeaderboardScreen from '../leaderboard';
 
 const ProfileStack = createStackNavigator();
 
@@ -26,6 +27,7 @@ function ProfileStackScreen({ navigation }) {
         }}
       />
       <ProfileStack.Screen name="Settings" component={SettingsScreen} />
+      <ProfileStack.Screen name="Leaderboard" component={LeaderboardScreen} />
     </ProfileStack.Navigator>
   );
 }
