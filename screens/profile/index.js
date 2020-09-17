@@ -8,6 +8,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
+import { sdgs } from '../../data/sdgs';
+import Visualisation from '../../components/visualisation';
 
 const ProfileContainer = styled.View`
   margin: 20px;
@@ -67,19 +69,6 @@ const ProfileButtonText = styled.Text`
   font-weight: bold;
 `;
 
-const profileOptionList = [
-  {
-    title: 'Leadership Board',
-    iconName: 'star-circle-outline',
-    screen: 'Leaderboard',
-  },
-  {
-    title: 'Submit Idea',
-    iconName: 'comment-question-outline',
-    screen: '',
-  },
-];
-
 function ProfileStats({ userData }) {
   return (
     <ProfileStatsContainer>
@@ -96,6 +85,19 @@ function ProfileStats({ userData }) {
 }
 
 function ProfileButtons({ userData, leaderboard, navigation }) {
+  const profileOptionList = [
+    {
+      title: 'Leadership Board',
+      iconName: 'star-circle-outline',
+      screen: 'Leaderboard',
+    },
+    {
+      title: 'Submit Idea',
+      iconName: 'comment-question-outline',
+      screen: '',
+    },
+  ];
+
   return (
     <ProfileButtonsContainer>
       {profileOptionList.map((item, i) => (
@@ -123,6 +125,11 @@ function ProfileScreen({ navigation }) {
     query GetAllEntries {
       entries {
         id
+        action {
+          relatedSdgs {
+            id
+          }
+        }
         user {
           username
         }
@@ -151,6 +158,35 @@ function ProfileScreen({ navigation }) {
 
   if (data) {
     const { entries } = data;
+
+    const totalSdgActions = _.map(entries, 'action.relatedSdgs').flat();
+    const totalSdgCount = _(totalSdgActions)
+      .groupBy('id')
+      .map((items, x) => ({ y: items.length, x }))
+      .value();
+
+    const totalColorFiltered = sdgs.filter(({ number: id1 }) => totalSdgCount.some(({ x: id2 }) => id2 === id1));
+    const totalColors = _.map(totalColorFiltered, 'color');
+
+    const userEntries = _.filter(entries, function (entry) {
+      return entry != null && entry.user.username == username;
+    });
+    const userSdgActions = _.map(userEntries, 'action.relatedSdgs').flat();
+    const userSdgCount = _(userSdgActions)
+      .groupBy('id')
+      .map((items, x) => ({ y: items.length, x }))
+      .value();
+
+    const userColorFiltered = sdgs.filter(({ number: id1 }) => userSdgCount.some(({ x: id2 }) => id2 === id1));
+    const userColors = _.map(userColorFiltered, 'color');
+
+    const visualisationData = {
+      totalSdgCount: totalSdgCount,
+      userSdgCount: userSdgCount,
+      totalColors: totalColors,
+      userColors: userColors,
+    };
+
     const leaderboard = _(entries)
       .groupBy('user.username')
       .map((items, name) => ({ name, count: items.length }))
@@ -169,6 +205,7 @@ function ProfileScreen({ navigation }) {
     return (
       <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
         <ScrollView style={{ width: '100%' }}>
+          <Visualisation data={visualisationData} navigation={navigation} />
           <ProfileContainer>
             <ProfilePhoto source={tempDisplayPhoto} />
             {userData.name && (
