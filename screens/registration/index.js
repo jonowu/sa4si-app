@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
-import { api } from '../../data';
+import Button from '../../components/button';
 
 export default function RegistrationScreen({ navigation }) {
   const [username, setUsername] = useState('');
@@ -129,11 +130,7 @@ export default function RegistrationScreen({ navigation }) {
           autoCapitalize="none"
         />
         <AuthenticatedContext.Consumer>
-          {(value) => (
-            <TouchableOpacity style={styles.button} onPress={() => register(value)}>
-              <Text style={styles.buttonTitle}>Create account</Text>
-            </TouchableOpacity>
-          )}
+          {(value) => <Button title="Create Account" onPress={() => register(value)} />}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import Button from '../../components/button';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
@@ -63,11 +64,7 @@ export default function LoginScreen({ navigation }) {
           autoCapitalize="none"
         />
         <AuthenticatedContext.Consumer>
-          {(value) => (
-            <TouchableOpacity style={styles.button} onPress={() => login(value)}>
-              <Text style={styles.buttonTitle}>Log in</Text>
-            </TouchableOpacity>
-          )}
+          {(value) => <Button title="Log In" onPress={() => login(value)} />}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>

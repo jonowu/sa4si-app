@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { Text, Button } from 'react-native';
+import { Text } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { gql, useMutation } from '@apollo/client';
 
-import ChildScreen from '../../components/child-screen';
 import { AuthenticatedContext } from '../../context/authenticated-context';
-import SdgListItem from '../../components/sdg-list-item';
 import share from '../../utils/share';
+import Button from '../../components/button';
+import ChildScreen from '../../components/child-screen';
+import SdgListItem from '../../components/sdg-list-item';
 
 function ActionScreen({ route, navigation }) {
   const { action, completedActions, isCompleted } = route.params;
