@@ -30,7 +30,6 @@ const TileAltImage = styled.View`
 
 const TileText = styled.View`
   height: 53%;
-  color: black;
   background-color: #e5e5e5;
 `;
 

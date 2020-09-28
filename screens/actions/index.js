@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
-import Checkbox from '../../components/checkbox';
+import Checkbox from '../../components/actions-checkbox';
 
 const ActionsContainer = styled.View``;
 
@@ -23,6 +23,9 @@ function ActionsScreen({ navigation }) {
         body
         relatedSdgs {
           id
+        }
+        image { 
+          formats
         }
       }
       entries(where: { user: { id: ${id} } }) {

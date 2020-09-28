@@ -14,7 +14,9 @@ const Checkbox = ({ title, onPress, isCompleted }) => (
     uncheckedIcon="circle-outline"
     checkedColor="black"
     uncheckedColor="black"
-    textStyle={{ marginLeft: 20 }}
+    textStyle={{
+      marginLeft: 20,
+    }}
     containerStyle={{
       margin: 0,
       marginBottom: 10,

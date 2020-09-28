@@ -7,8 +7,11 @@ import Screen from '../../components/screen';
 
 const HeaderContainer = styled.View`
   background-color: ${({ headerColor }) => headerColor};
-  ${({ headerImage }) => headerImage && 'max-height: 30%;'}
-  ${({ headerImage }) => !headerImage && 'flex-shrink: 1'};
+  flex-shrink: 1;
+`;
+
+const ImageHeaderContainer = styled.View`
+  height: 220px;
 `;
 
 const SdgImage = styled.Image`
@@ -41,14 +44,31 @@ const ChildScreen = ({ headerColor, sdgImageSrc, children, heading, headerImage 
   return (
     <Screen>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <HeaderContainer headerColor={headerColor} headerImage={headerImage}>
-          {sdgImageSrc && <SdgImage source={sdgImageSrc} resizeMode="contain" />}
-          {heading && <Heading>{heading}</Heading>}
-          {headerImage && <HeaderImage source={headerImage} resizeMode="cover" />}
-        </HeaderContainer>
+        {!headerImage ? (
+          <ScreenWithHeading headerColor={headerColor} heading={heading} sdgImageSrc={sdgImageSrc} />
+        ) : (
+          <ScreenWithHeaderImage headerImage={headerImage} />
+        )}
         <BodyContainer>{children}</BodyContainer>
       </ScrollView>
     </Screen>
+  );
+};
+
+const ScreenWithHeading = ({ headerColor, heading, sdgImageSrc }) => {
+  return (
+    <HeaderContainer headerColor={headerColor}>
+      {sdgImageSrc && <SdgImage source={sdgImageSrc} resizeMode="contain" />}
+      {heading && <Heading>{heading}</Heading>}
+    </HeaderContainer>
+  );
+};
+
+const ScreenWithHeaderImage = ({ headerImage }) => {
+  return (
+    <ImageHeaderContainer headerImage={headerImage}>
+      {headerImage && <HeaderImage source={headerImage} resizeMode="cover" />}
+    </ImageHeaderContainer>
   );
 };
 
