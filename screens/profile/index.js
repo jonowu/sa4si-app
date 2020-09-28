@@ -94,7 +94,7 @@ function ProfileButtons({ userData, leaderboard, navigation }) {
     {
       title: 'Submit Idea',
       iconName: 'comment-question-outline',
-      screen: '',
+      screen: 'Submit an Idea',
     },
   ];
 
@@ -205,7 +205,7 @@ function ProfileScreen({ navigation }) {
     return (
       <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
         <ScrollView style={{ width: '100%' }}>
-          <Visualisation data={visualisationData} navigation={navigation} />
+          {userSdgCount.length > 0 && <Visualisation data={visualisationData} navigation={navigation} />}
           <ProfileContainer>
             <ProfilePhoto source={tempDisplayPhoto} />
             {userData.name && (
