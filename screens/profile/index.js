@@ -3,6 +3,8 @@ import { ActivityIndicator, Text, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { gql, useQuery } from '@apollo/client';
 import _ from 'lodash';
+import AsyncStorage from '@react-native-community/async-storage';
+import client from '../../utils/apolloClient';
 import tempDisplayPhoto from '../../assets/icon.png'; // temp profile icon
 import { useIsFocused } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -96,22 +98,42 @@ function ProfileButtons({ userData, leaderboard, navigation }) {
       iconName: 'comment-question-outline',
       screen: 'Submit an Idea',
     },
+    {
+      title: 'Logout',
+      iconName: 'logout-variant',
+      screen: '',
+    },
   ];
 
+  const logout = async (value) => {
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('token');
+    client.resetStore();
+    value.setUser(false);
+  };
+
   return (
-    <ProfileButtonsContainer>
-      {profileOptionList.map((item, i) => (
-        <ProfileButton
-          key={i}
-          onPress={() =>
-            item.screen ? navigation.navigate(item.screen, { leaderboard: leaderboard, userData: userData }) : null
-          }
-        >
-          <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
-          <ProfileButtonText>{item.title}</ProfileButtonText>
-        </ProfileButton>
-      ))}
-    </ProfileButtonsContainer>
+    <AuthenticatedContext.Consumer>
+      {(value) => (
+        <ProfileButtonsContainer>
+          {profileOptionList.map((item, i) => (
+            <ProfileButton
+              key={i}
+              onPress={() =>
+                item.screen
+                  ? navigation.navigate(item.screen, { leaderboard: leaderboard, userData: userData })
+                  : item.title == 'Logout'
+                    ? logout(value)
+                    : null
+              }
+            >
+              <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
+              <ProfileButtonText>{item.title}</ProfileButtonText>
+            </ProfileButton>
+          ))}
+        </ProfileButtonsContainer>
+      )}
+    </AuthenticatedContext.Consumer>
   );
 }
 

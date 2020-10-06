@@ -38,9 +38,13 @@ function ThankYou({ title, margin }) {
   return (
     <ThankYouContainer style={{ marginLeft: margin, marginRight: margin }}>
       <ThankYouHeader>Thank You!</ThankYouHeader>
-      <ThankYouDescription>Congratulations on completing this action!</ThankYouDescription>
-      <ThankYouDescription style={{ fontWeight: 'bold' }}>{title}</ThankYouDescription>
-      <ThankYouDescription>Keep up the great work!</ThankYouDescription>
+      <ThankYouDescription adjustsFontSizeToFit numberOfLines={2}>
+        Congratulations on completing this action!
+      </ThankYouDescription>
+      <ThankYouDescription adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>
+        {title}
+      </ThankYouDescription>
+      <ThankYouDescription adjustsFontSizeToFit>Keep up the great work!</ThankYouDescription>
     </ThankYouContainer>
   );
 }
