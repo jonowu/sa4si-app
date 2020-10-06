@@ -17,7 +17,7 @@ function ActionsScreen({ navigation }) {
 
   const GET_USER_ACTIONS = gql`
     query GetUserActions {
-      actions {
+      actions(where: { active: true }) {
         id
         title
         body
@@ -65,24 +65,30 @@ function ActionsScreen({ navigation }) {
   return (
     <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <ActionsContainer>
-        {actions.map((action, i) => {
-          const isCompleted = completedActions.includes(action.id);
+        {actions.length > 0 ? (
+          actions.map((action, i) => {
+            const isCompleted = completedActions.includes(action.id);
 
-          return (
-            <Checkbox
-              key={i}
-              title={action.title}
-              isCompleted={isCompleted}
-              onPress={() =>
-                navigation.navigate('Action', {
-                  action: action,
-                  isCompleted: isCompleted,
-                  completedActions: completedActions,
-                })
-              }
-            />
-          );
-        })}
+            return (
+              <Checkbox
+                key={i}
+                title={action.title}
+                isCompleted={isCompleted}
+                onPress={() =>
+                  navigation.navigate('Action', {
+                    action: action,
+                    isCompleted: isCompleted,
+                    completedActions: completedActions,
+                  })
+                }
+              />
+            );
+          })
+        ) : (
+          <Text style={{ fontSize: 20, margin: 20, textAlign: 'center' }}>
+            There are no actions available right now, please check again later!
+          </Text>
+        )}
       </ActionsContainer>
     </Screen>
   );

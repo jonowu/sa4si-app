@@ -29,7 +29,7 @@ const Article = ({ route }) => {
   const { title, created_at, body, image } = article;
 
   return (
-    <ChildScreen headerImage={{ uri: image.formats.small.url }}>
+    <ChildScreen heading={title} headerColor="#DC2D27" headerImage={image ? { uri: image.formats.small.url } : null}>
       <HeaderContainer>
         {title && <Heading>{title}</Heading>}
         {created_at && <Date>{Moment(created_at).format('DD/MM/YYYY')}</Date>}

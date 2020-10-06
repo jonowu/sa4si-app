@@ -59,7 +59,7 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <ChildScreen heading={title} headerColor="green" headerImage={image ? { uri: image.formats.small.url } : null}>
+    <ChildScreen heading={title} headerColor="#DC2D27" headerImage={image ? { uri: image.formats.small.url } : null}>
       <HeaderContainer>
         {title && <Heading>{title}</Heading>}
         <Checkbox

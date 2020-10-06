@@ -25,7 +25,7 @@ const TileImage = styled.Image`
 
 const TileAltImage = styled.View`
   height: 47%;
-  background-color: palegreen;
+  background-color: #dc2d27;
 `;
 
 const TileText = styled.View`
@@ -59,7 +59,7 @@ const TileTextDescription = styled.Text`
 function NewsScreen({ navigation }) {
   const GET_ARTICLES = gql`
     query GetArticles {
-      articles {
+      articles(where: { active: true }) {
         id
         created_at
         description
@@ -93,22 +93,28 @@ function NewsScreen({ navigation }) {
       <ScrollView style={{ width: '100%' }}>
         <Text style={{ padding: 5, textAlign: 'center' }}>Tap on an article to learn more!</Text>
         <TileList>
-          {articles.map((article, i) => (
-            <TileContainer key={i} onPress={() => navigation.navigate('Article', { article: article })}>
-              {article.image ? (
-                <TileImage source={{ uri: article.image.formats.small.url }}></TileImage>
-              ) : (
-                <TileAltImage></TileAltImage>
-              )}
-              <TileText>
-                <TileTextTop>
-                  <TileTextTopTitle>{article.title}</TileTextTopTitle>
-                  <TileTextTopDate>{Moment(article.created_at).format('DD/MM/YY')}</TileTextTopDate>
-                </TileTextTop>
-                <TileTextDescription>{article.description}</TileTextDescription>
-              </TileText>
-            </TileContainer>
-          ))}
+          {articles.length > 0 ? (
+            articles.map((article, i) => (
+              <TileContainer key={i} onPress={() => navigation.navigate('Article', { article: article })}>
+                {article.image ? (
+                  <TileImage source={{ uri: article.image.formats.small.url }}></TileImage>
+                ) : (
+                  <TileAltImage></TileAltImage>
+                )}
+                <TileText>
+                  <TileTextTop>
+                    <TileTextTopTitle>{article.title}</TileTextTopTitle>
+                    <TileTextTopDate>{Moment(article.created_at).format('DD/MM/YY')}</TileTextTopDate>
+                  </TileTextTop>
+                  <TileTextDescription>{article.description}</TileTextDescription>
+                </TileText>
+              </TileContainer>
+            ))
+          ) : (
+            <Text style={{ fontSize: 20, margin: 20, textAlign: 'center' }}>
+              There are no news articles available right now, please check again later!
+            </Text>
+          )}
         </TileList>
       </ScrollView>
     </Screen>
