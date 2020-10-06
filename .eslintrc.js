@@ -14,7 +14,6 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    indent: ['error', 2],
     semi: ['error', 'always'],
     'react/prop-types': 0,
   },
