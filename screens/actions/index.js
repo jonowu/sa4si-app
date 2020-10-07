@@ -7,7 +7,10 @@ import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 import Checkbox from '../../components/actions-checkbox';
 
-const ActionsContainer = styled.View``;
+const ActionsContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+`;
 
 function ActionsScreen({ navigation }) {
   const authContext = useContext(AuthenticatedContext);
@@ -51,7 +54,7 @@ function ActionsScreen({ navigation }) {
 
   if (loading) {
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ActivityIndicator size="large" />
       </Screen>
     );
@@ -63,7 +66,7 @@ function ActionsScreen({ navigation }) {
   }
 
   return (
-    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+    <Screen scrollable centeredHorizontally centeredVertically>
       <ActionsContainer>
         {actions.length > 0 ? (
           actions.map((action, i) => {

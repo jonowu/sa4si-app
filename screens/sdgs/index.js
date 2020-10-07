@@ -22,7 +22,7 @@ function SdgsScreen({ navigation }) {
   );
 
   return (
-    <Screen style={{ alignItems: 'center' }}>
+    <Screen centeredHorizontally>
       <Text style={{ padding: 5 }}>Tap on an SDG to learn more!</Text>
       <FlatList
         style={{ width: '100%', paddingHorizontal: 10 }}

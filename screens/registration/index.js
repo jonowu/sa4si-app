@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
+import Input from '../../components/input';
 import Button from '../../components/button';
 
 export default function RegistrationScreen({ navigation }) {
@@ -71,62 +72,24 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   return (
-    <Screen>
-      <View style={{ width: '100%' }}>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="First Name"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setFirstName(text)}
-          value={firstName}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Last Name"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setLastName(text)}
-          value={lastName}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
+    <Screen scrollable>
+      <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+        <Input label="Username" onChangeText={(text) => setUsername(text)} value={username} autoCapitalize="none" />
+        <Input label="First Name" onChangeText={(text) => setFirstName(text)} value={firstName} autoCapitalize="none" />
+        <Input label="Last Name" onChangeText={(text) => setLastName(text)} value={lastName} autoCapitalize="none" />
+        <Input label="E-mail" onChangeText={(text) => setEmail(text)} value={email} autoCapitalize="none" />
+        <Input
           secureTextEntry
-          placeholder="Password"
+          label="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
-          underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
+        <Input
           secureTextEntry
-          placeholder="Confirm Password"
+          label="Confirm Password"
           onChangeText={(text) => setConfirmPassword(text)}
           value={confirmPassword}
-          underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
         <AuthenticatedContext.Consumer>
@@ -181,7 +144,7 @@ const styles = StyleSheet.create({
   },
   footerView: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   footerText: {
     fontSize: 16,

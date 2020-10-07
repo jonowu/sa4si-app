@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import Button from '../../components/button';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import Button from '../../components/button';
+import Input from '../../components/input';
 import Screen from '../../components/screen';
 
 export default function LoginScreen({ navigation }) {
@@ -43,37 +44,31 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <Screen>
-      <View style={{ width: '100%' }}>
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail or Username"
-          placeholderTextColor="#aaaaaa"
+      <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+        <Input
+          label="E-mail or Username"
+          autoCapitalize="none"
           onChangeText={(text) => setEmailOrUsername(text)}
           value={emailOrUsername}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
         />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
+        <Input
+          label="Password"
           secureTextEntry
-          placeholder="Password"
+          autoCapitalize="none"
           onChangeText={(text) => setPassword(text)}
           value={password}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
         />
-        <AuthenticatedContext.Consumer>
-          {(value) => <Button title="Log In" onPress={() => login(value)} />}
-        </AuthenticatedContext.Consumer>
-        <View style={styles.footerView}>
-          <Text style={styles.footerText}>
-            Don’t have an account?{' '}
-            <Text onPress={onFooterLinkPress} style={styles.footerLink}>
-              Sign up
-            </Text>
+      </View>
+      <AuthenticatedContext.Consumer>
+        {(value) => <Button title="Log In" onPress={() => login(value)} />}
+      </AuthenticatedContext.Consumer>
+      <View style={styles.footerView}>
+        <Text style={styles.footerText}>
+          Don’t have an account?{' '}
+          <Text onPress={onFooterLinkPress} style={styles.footerLink}>
+            Sign up
           </Text>
-        </View>
+        </Text>
       </View>
     </Screen>
   );
