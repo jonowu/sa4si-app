@@ -18,24 +18,24 @@ export default function LoginScreen({ navigation }) {
     navigation.navigate('Registration');
   };
 
-  const storeData = async (key, value) => {
+  const storeAsyncStorage = async (token, user) => {
     try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      alert('Saving data to storage failed.');
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('user', user);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const login = (value) => {
+  const login = (setUser) => {
     axios
       .post(`${api}/auth/local`, {
         identifier: emailOrUsername,
         password: password,
       })
       .then((response) => {
-        value.setUser({ data: response.data.user });
-        storeData('token', response.data.jwt);
-        storeData('user', JSON.stringify(response.data.user));
+        setUser({ data: response.data.user });
+        storeAsyncStorage(response.data.jwt, JSON.stringify(response.data.user)); // store the token and user in async storage
       })
       .catch((error) => {
         error.response.data.message[0].messages.forEach((errMsg) => alert(errMsg.message));
@@ -58,17 +58,17 @@ export default function LoginScreen({ navigation }) {
           onChangeText={(text) => setPassword(text)}
           value={password}
         />
-      </View>
-      <AuthenticatedContext.Consumer>
-        {(value) => <Button title="Log In" onPress={() => login(value)} />}
-      </AuthenticatedContext.Consumer>
-      <View style={styles.footerView}>
-        <Text style={styles.footerText}>
-          Don’t have an account?{' '}
-          <Text onPress={onFooterLinkPress} style={styles.footerLink}>
-            Sign up
+        <AuthenticatedContext.Consumer>
+          {({ setUser }) => <Button title="Log In" onPress={() => login(setUser)} />}
+        </AuthenticatedContext.Consumer>
+        <View style={styles.footerView}>
+          <Text style={styles.footerText}>
+            Don’t have an account?{' '}
+            <Text onPress={onFooterLinkPress} style={styles.footerLink}>
+              Sign up
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
     </Screen>
   );

@@ -1,10 +1,10 @@
 const colors = {
   black: '#000',
   white: '#FFF',
-  blue: '#2469A9',
+  blue: '#6FD7F1',
   red: '#BB000C',
-  green: '#00A84E',
-  purple: '#B256B8',
+  green: '#5FECA1',
+  purple: '#F18DF6',
   yellow: '#FEEC04', // Swinburne Yellow
 };
 

@@ -1,50 +1,32 @@
 import React, { useContext } from 'react';
 import { ActivityIndicator, Text, ScrollView } from 'react-native';
-import styled from 'styled-components/native';
 import { gql, useQuery } from '@apollo/client';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import _ from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 import client from '../../utils/apolloClient';
-import tempDisplayPhoto from '../../assets/icon.png'; // temp profile icon
-import { useIsFocused } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import styled from 'styled-components/native';
+
 import { AuthenticatedContext } from '../../context/authenticated-context';
-import Screen from '../../components/screen';
+import { colors } from '../../constants/colors';
+import { Heading, Subheading, Body } from '../../components/typography';
 import { sdgs } from '../../data/sdgs';
+import ProfilePicture from '../../components/profile-picture';
+import Screen from '../../components/screen';
 import Visualisation from '../../components/visualisation';
 
-const ProfileContainer = styled.View`
-  margin: 20px;
-  border-radius: 12px;
+const Container = styled.View`
   background: #343642;
   align-items: center;
+  padding-top: 20px;
+  margin: 20px;
+  border-radius: 12px;
 `;
 
-const ProfilePhoto = styled.Image`
-  width: 120px;
-  height: 120px;
-  border-radius: 60px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  tint-color: white;
-`;
-
-const ProfileStatsContainer = styled.View`
-  flex-direction: row;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  width: 100%;
-`;
-
-const ProfileStatsChild = styled.View`
-  width: 50%;
+const ProfileInfoContainer = styled.View`
+  padding: 20px;
   align-items: center;
-`;
-
-const BoldText = styled.Text`
-  font-weight: bold;
-  font-size: 16px;
-  color: ${({ color }) => (color ? color : 'white')};
 `;
 
 const ProfileButtonsContainer = styled.View`
@@ -71,80 +53,44 @@ const ProfileButtonText = styled.Text`
   font-weight: bold;
 `;
 
-function ProfileStats({ userData }) {
-  return (
-    <ProfileStatsContainer>
-      <ProfileStatsChild>
-        <BoldText color="#DC2D28">Position</BoldText>
-        {userData.ranking && <Text style={{ color: 'white' }}>{userData.ranking} </Text>}
-      </ProfileStatsChild>
-      <ProfileStatsChild>
-        <BoldText color="#DC2D28">Actions</BoldText>
-        {userData.count && <Text style={{ color: 'white' }}>{userData.count} </Text>}
-      </ProfileStatsChild>
-    </ProfileStatsContainer>
-  );
-}
+const profileOptionList = [
+  {
+    title: 'Leaderboard',
+    iconName: 'star-circle-outline',
+    screen: 'Leaderboard',
+  },
+  {
+    title: 'Customise Profile',
+    iconName: 'account',
+    screen: 'Edit Profile',
+  },
+  {
+    title: 'Submit Idea',
+    iconName: 'comment-question-outline',
+    screen: 'Submit an Idea',
+  },
+  {
+    title: 'Logout',
+    iconName: 'logout-variant',
+    screen: '',
+  },
+];
 
-function ProfileButtons({ userData, leaderboard, navigation }) {
-  const profileOptionList = [
-    {
-      title: 'Leadership Board',
-      iconName: 'star-circle-outline',
-      screen: 'Leaderboard',
-    },
-    {
-      title: 'Submit Idea',
-      iconName: 'comment-question-outline',
-      screen: 'Submit an Idea',
-    },
-    {
-      title: 'Logout',
-      iconName: 'logout-variant',
-      screen: '',
-    },
-  ];
-
-  const logout = async (value) => {
-    await AsyncStorage.removeItem('user');
-    await AsyncStorage.removeItem('token');
-    client.resetStore();
-    value.setUser(false);
-  };
-
-  return (
-    <AuthenticatedContext.Consumer>
-      {(value) => (
-        <ProfileButtonsContainer>
-          {profileOptionList.map((item, i) => (
-            <ProfileButton
-              key={i}
-              onPress={() =>
-                item.screen
-                  ? navigation.navigate(item.screen, { leaderboard: leaderboard, userData: userData })
-                  : item.title == 'Logout'
-                    ? logout(value)
-                    : null
-              }
-            >
-              <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
-              <ProfileButtonText>{item.title}</ProfileButtonText>
-            </ProfileButton>
-          ))}
-        </ProfileButtonsContainer>
-      )}
-    </AuthenticatedContext.Consumer>
-  );
-}
+const logout = async (value) => {
+  await AsyncStorage.removeItem('user');
+  await AsyncStorage.removeItem('token');
+  client.resetStore();
+  value.setUser(false);
+};
 
 function ProfileScreen({ navigation }) {
-  const isFocused = useIsFocused();
-  let fetched = false;
   const authContext = useContext(AuthenticatedContext);
   const username = authContext.user.data.username;
+  const firstName = authContext.user.data.firstName;
+  const lastName = authContext.user.data.lastName;
 
-  const GET_STATS = gql`
-    query GetAllEntries {
+  const GET_ENTRIES = gql`
+    query GetEntries {
       entries {
         id
         action {
@@ -156,15 +102,29 @@ function ProfileScreen({ navigation }) {
           username
         }
       }
+      self {
+        id
+        username
+        firstName
+        lastName
+        profilePicture {
+          url
+        }
+        information
+        areasOfInterest
+        funFacts
+      }
     }
   `;
 
-  const { loading, error, data, refetch = {} } = useQuery(GET_STATS);
+  const isFocused = useIsFocused();
+  let fetched = false;
+
+  const { loading, error, data, refetch = {} } = useQuery(GET_ENTRIES);
   if (data && isFocused && !fetched) {
     refetch();
     fetched = true;
   }
-
   if (loading) {
     return (
       <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -180,6 +140,15 @@ function ProfileScreen({ navigation }) {
 
   if (data) {
     const { entries } = data;
+    const { self } = data;
+
+    const profileInfo = {
+      information: self.information,
+      funFacts: self.funFacts,
+      areasOfInterest: self.areasOfInterest,
+      profilePicture: self.profilePicture,
+      name: self.firstName,
+    };
 
     const totalSdgActions = _.map(entries, 'action.relatedSdgs').flat();
     const totalSdgCount = _(totalSdgActions)
@@ -209,35 +178,69 @@ function ProfileScreen({ navigation }) {
       userColors: userColors,
     };
 
-    const leaderboard = _(entries)
-      .groupBy('user.username')
-      .map((items, name) => ({ name, count: items.length }))
-      .sortBy(entries, 'count')
-      .reverse()
-      .value();
-
-    const userTotalActions = leaderboard.find((entry) => entry.name === username);
-    const actionCount = userTotalActions ? userTotalActions.count : '0';
-
-    const userLeaderboardRanking = leaderboard.findIndex((entry) => entry.name === username);
-    const leaderboardRanking = userLeaderboardRanking > -1 ? userLeaderboardRanking + 1 : 'N/A';
-
-    const userData = { name: username, count: actionCount, ranking: leaderboardRanking };
-
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ScrollView style={{ width: '100%' }}>
           {userSdgCount.length > 0 && <Visualisation data={visualisationData} navigation={navigation} />}
-          <ProfileContainer>
-            <ProfilePhoto source={tempDisplayPhoto} />
-            {userData.name && (
-              <BoldText style={{ fontSize: 20 }} color="#FEEC04">
-                {userData.name}
-              </BoldText>
-            )}
-            <ProfileStats userData={userData} />
-            <ProfileButtons userData={userData} leaderboard={leaderboard} navigation={navigation} />
-          </ProfileContainer>
+          <Container>
+            <ProfilePicture
+              source={profileInfo.profilePicture?.url ? { uri: profileInfo.profilePicture?.url } : null}
+              firstName={firstName}
+              lastName={lastName}
+              containerStyle={{ marginBottom: 10 }}
+              size={120}
+            />
+            {self.username && <Heading variant={3}>{self.username}</Heading>}
+            <ProfileInfoContainer>
+              {!_.isEmpty(profileInfo.information) && (
+                <>
+                  <Subheading variant={2} color={colors.blue}>
+                    Bio
+                  </Subheading>
+                  <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
+                    {self.information}
+                  </Body>
+                </>
+              )}
+              {!_.isEmpty(profileInfo.areasOfInterest) && (
+                <>
+                  <Subheading variant={2} color={colors.purple}>
+                    Areas of Interest
+                  </Subheading>
+                  <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
+                    {profileInfo.areasOfInterest}
+                  </Body>
+                </>
+              )}
+              {!_.isEmpty(profileInfo.funFacts) && (
+                <>
+                  <Subheading variant={2} color={colors.green}>
+                    Sustainable Fun Facts
+                  </Subheading>
+                  <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
+                    {profileInfo.funFacts}
+                  </Body>
+                </>
+              )}
+            </ProfileInfoContainer>
+            <AuthenticatedContext.Consumer>
+              {(value) => (
+                <ProfileButtonsContainer>
+                  {profileOptionList.map((item, i) => (
+                    <ProfileButton
+                      key={i}
+                      onPress={() =>
+                        item.title === 'Logout' ? logout(value) : navigation.navigate(item.screen, { profileInfo })
+                      }
+                    >
+                      <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
+                      <ProfileButtonText>{item.title}</ProfileButtonText>
+                    </ProfileButton>
+                  ))}
+                </ProfileButtonsContainer>
+              )}
+            </AuthenticatedContext.Consumer>
+          </Container>
         </ScrollView>
       </Screen>
     );

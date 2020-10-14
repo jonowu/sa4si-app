@@ -62,7 +62,7 @@ function ActionsScreen({ navigation }) {
 
   if (error) {
     console.error(error);
-    return <Text>Error</Text>;
+    return <Text>Error: {JSON.stringify(error)}</Text>;
   }
 
   return (

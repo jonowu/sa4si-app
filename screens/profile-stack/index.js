@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreen from '../profile';
 import LeaderboardScreen from '../leaderboard';
+import EditProfileScreen from '../edit-profile';
 import SubmitIdeaScreen from '../submit-idea';
 import SubmitIdeaCompletionScreen from '../submit-idea-completion';
 
@@ -12,6 +13,7 @@ function ProfileStackScreen() {
     <ProfileStack.Navigator initialRouteName="Profile">
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="Leaderboard" component={LeaderboardScreen} />
+      <ProfileStack.Screen name="Edit Profile" component={EditProfileScreen} />
       <ProfileStack.Screen name="Submit an Idea" component={SubmitIdeaScreen} />
       <ProfileStack.Screen name="Idea Submitted" component={SubmitIdeaCompletionScreen} />
     </ProfileStack.Navigator>

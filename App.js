@@ -1,6 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import React, { useState, useEffect } from 'react';
 import { ApolloProvider } from '@apollo/client';
 
@@ -9,26 +8,35 @@ import LoginScreen from './screens/login';
 import MainScreen from './screens/main';
 import RegistrationScreen from './screens/registration';
 import client from './utils/apolloClient';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [token, setToken] = useState();
 
-  const readData = async () => {
+  const readAsyncStore = async () => {
     try {
-      const userValue = await AsyncStorage.getItem('user');
-      if (userValue !== null) {
-        setUser({ data: JSON.parse(userValue) });
+      const user = await AsyncStorage.getItem('user');
+      const token = await AsyncStorage.getItem('token');
+
+      if (user !== null) {
+        setUser({ data: JSON.parse(user) });
       }
-    } catch (e) {
-      console.log('Failed to fetch the user data from storage');
+
+      if (token !== null) {
+        setToken(token);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    readData();
+    readAsyncStore();
     setLoading(false);
   }, []);
 

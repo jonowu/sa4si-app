@@ -1,8 +1,11 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React, { useContext } from 'react';
+import { ActivityIndicator, Text, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import { gql, useQuery } from '@apollo/client';
+import _ from 'lodash';
 import Screen from '../../components/screen';
-import tempDisplayPhoto from '../../assets/icon.png'; // temp profile icon
+import ProfilePicture from '../../components/profile-picture';
+import { AuthenticatedContext } from '../../context/authenticated-context';
 
 const BoldText = styled.Text`
   font-weight: bold;
@@ -23,15 +26,6 @@ const LeaderboardPodiumItem = styled.View`
   align-items: center;
 `;
 
-const PodiumProfilePhoto = styled.Image`
-  width: 90px;
-  height: 90px;
-  border-radius: 45px;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  tint-color: #dbdad8;
-`;
-
 const PodiumRanking = styled.View`
   position: absolute;
   right: 0px;
@@ -41,6 +35,7 @@ const PodiumRanking = styled.View`
   background: #dc2d28;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 `;
 
 const LeaderboardList = styled.View`
@@ -75,13 +70,6 @@ const ItemPhotoContainer = styled.View`
   padding-left: 15px;
 `;
 
-const ItemProfilePhoto = styled.Image`
-  width: 55px;
-  height: 55px;
-  border-radius: 27.5px;
-  tint-color: #dbdad8;
-`;
-
 const ItemTextContainer = styled.View`
   width: 65%;
   flex-direction: row;
@@ -99,22 +87,50 @@ const ItemCount = styled.View`
   justify-content: center;
 `;
 
-function PodiumItem({ data, index }) {
-  let ranking = '';
-  if (index == 0) {
-    ranking = '1st';
-  } else if (index == 1) {
-    ranking = '2nd';
+function getPodiumRanking(index) {
+  if (index === 0) {
+    return '1st';
+  } else if (index === 1) {
+    return '2nd';
   } else {
-    ranking = '3rd';
+    return '3rd';
   }
+}
+
+const GET_ENTRIES = gql`
+  query GetEntries {
+    entries {
+      id
+      action {
+        relatedSdgs {
+          id
+        }
+      }
+      user {
+        id
+        username
+        firstName
+        lastName
+        profilePicture {
+          url
+        }
+      }
+    }
+  }
+`;
+
+function PodiumItem({ data, index }) {
   return (
     <LeaderboardPodiumItem>
       <PodiumRanking>
-        <BoldText style={{ fontSize: 14, color: 'white' }}>{ranking}</BoldText>
+        <BoldText style={{ fontSize: 14, color: 'white' }}>{getPodiumRanking(index)}</BoldText>
       </PodiumRanking>
-      <PodiumProfilePhoto source={tempDisplayPhoto} />
-      <BoldText adjustsFontSizeToFit numberOfLines={2} style={{ width: '90%', textAlign: 'center' }}>
+      <ProfilePicture
+        source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
+        firstName={data.firstName}
+        lastName={data.lastName}
+      />
+      <BoldText adjustsFontSizeToFit numberOfLines={1} style={{ width: '90%', textAlign: 'center' }}>
         {data.name}
       </BoldText>
     </LeaderboardPodiumItem>
@@ -129,11 +145,16 @@ function LeaderboardItem({ data, index, current }) {
         <BoldText style={{ fontSize: 24 }}>{index + 1}</BoldText>
       </ItemRanking>
       <ItemPhotoContainer>
-        <ItemProfilePhoto source={tempDisplayPhoto} />
+        <ProfilePicture
+          source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
+          firstName={data.firstName ? data.firstName : '?'}
+          lastName={data.lastName ? data.lastName : '?'}
+          size="medium"
+        />
       </ItemPhotoContainer>
       <ItemTextContainer>
         <ItemName>
-          <BoldText adjustsFontSizeToFit numberOfLines={2} style={{ fontSize: 18 }}>
+          <BoldText adjustsFontSizeToFit numberOfLines={1} style={{ fontSize: 18 }}>
             {data.name}
           </BoldText>
         </ItemName>
@@ -145,32 +166,74 @@ function LeaderboardItem({ data, index, current }) {
   );
 }
 
-function LeaderboardScreen({ route }) {
-  const { leaderboard, userData } = route.params;
-  return (
-    <Screen>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <LeaderboardContainer>
-          <LeaderboardPodium>
-            {leaderboard &&
-              leaderboard.slice(0, 3).map((user, i) => {
-                return <PodiumItem data={user} key={i} index={i} />;
-              })}
-          </LeaderboardPodium>
-          <LeaderboardList>
-            {leaderboard &&
-              leaderboard.slice(0, 10).map((user, i) => {
-                const isCurrent = userData.name == user.name;
-                return <LeaderboardItem data={user} key={i} index={i} current={isCurrent} />;
-              })}
-            {userData.ranking > 10 && (
-              <LeaderboardItem data={userData} key={10} index={userData.ranking - 1} current={true} />
-            )}
-          </LeaderboardList>
-        </LeaderboardContainer>
-      </ScrollView>
-    </Screen>
-  );
+function LeaderboardScreen() {
+  const authContext = useContext(AuthenticatedContext);
+  const username = authContext.user.data.username;
+
+  const { loading, error, data } = useQuery(GET_ENTRIES);
+
+  if (loading) {
+    return (
+      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" />
+      </Screen>
+    );
+  }
+
+  if (error) {
+    console.error(error);
+    return <Text>Error</Text>;
+  }
+
+  if (data) {
+    const { entries } = data;
+    const leaderboard = _(entries)
+      .groupBy('user.username')
+      .map((entries, name) => {
+        return {
+          name,
+          count: entries.length,
+          firstName: entries[0].user.firstName,
+          lastName: entries[0].user.lastName,
+          profilePicture: entries[0].user.profilePicture,
+        };
+      })
+      .sortBy(entries, 'count')
+      .reverse()
+      .value();
+
+    const top3Users = leaderboard.slice(0, 3);
+    const top10Users = leaderboard.slice(0, 10);
+
+    const isUserOutsideTop10 = !top10Users.some((user) => user.name === username);
+    const currentUserData = leaderboard.find((user) => user.name === username);
+    const currentUserRanking = leaderboard.findIndex((user) => user.name === username);
+
+    return (
+      <Screen>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <LeaderboardContainer>
+            <LeaderboardPodium>
+              {top3Users &&
+                top3Users.map((user, i) => {
+                  return <PodiumItem data={user} key={i} index={i} />;
+                })}
+            </LeaderboardPodium>
+            <LeaderboardList>
+              {top10Users &&
+                top10Users.map((user, i) => {
+                  const isCurrent = username === user.name;
+                  return <LeaderboardItem data={user} key={i} index={i} current={isCurrent} />;
+                })}
+              {currentUserData && currentUserData && isUserOutsideTop10 && (
+                <LeaderboardItem data={currentUserData} key={10} index={currentUserRanking} current={true} />
+              )}
+            </LeaderboardList>
+          </LeaderboardContainer>
+        </ScrollView>
+      </Screen>
+    );
+  }
 }
 
 export default LeaderboardScreen;

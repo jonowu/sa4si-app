@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import Screen from '../../components/screen';
 import Button from '../../components/button';
@@ -40,7 +40,7 @@ const TextBox = styled.TextInput`
 `;
 
 function SubmitIdeaScreen({ route, navigation }) {
-  const { userData } = route.params;
+  const { profileInfo } = route.params;
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
   const [title, setTitle] = useState('');
@@ -75,10 +75,7 @@ function SubmitIdeaScreen({ route, navigation }) {
     <Screen>
       <ScrollView>
         <IdeaContainer>
-          <GreetingText>
-            Hello {userData.name}
-            <Text style={{ color: '#DC2D27' }}>!</Text>
-          </GreetingText>
+          <GreetingText>Hello {profileInfo.name} 👋</GreetingText>
           <NormalText>
             Feel free to leave us a message on how we can improve your experience with the app! Or request for an action
             you think we should create!

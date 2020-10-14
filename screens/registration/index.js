@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
+import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { api } from '../../data';
@@ -22,7 +22,16 @@ export default function RegistrationScreen({ navigation }) {
     navigation.navigate('Login');
   };
 
-  const register = (value) => {
+  const storeAsyncStorage = async (token, user) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('user', user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const register = (setUser) => {
     if (password !== confirmPassword) {
       alert('Passwords don’t match.');
       return;
@@ -44,14 +53,6 @@ export default function RegistrationScreen({ navigation }) {
       return;
     }
 
-    const storeData = async (key, value) => {
-      try {
-        await AsyncStorage.setItem(key, value);
-      } catch (e) {
-        alert('Saving data to storage failed.');
-      }
-    };
-
     axios
       .post(`${api}/auth/local/register`, {
         username: username,
@@ -61,13 +62,11 @@ export default function RegistrationScreen({ navigation }) {
         lastName: lastName,
       })
       .then((response) => {
-        value.setUser({ data: response.data.user });
-        storeData('token', response.data.jwt);
-        storeData('user', JSON.stringify(response.data.user));
+        setUser({ data: response.data.user });
+        storeAsyncStorage(response.data.jwt, JSON.stringify(response.data.user)); // store the token and user data in async storage
       })
       .catch((error) => {
         error.response.data.message[0].messages.forEach((errMsg) => alert(errMsg.message));
-        console.log('An error occurred:', error.response.data);
       });
   };
 
@@ -93,7 +92,7 @@ export default function RegistrationScreen({ navigation }) {
           autoCapitalize="none"
         />
         <AuthenticatedContext.Consumer>
-          {(value) => <Button title="Create Account" onPress={() => register(value)} />}
+          {({ setUser }) => <Button title="Create Account" onPress={() => register(setUser)} />}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
