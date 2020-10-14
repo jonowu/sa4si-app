@@ -39,7 +39,7 @@ const TextBox = styled.TextInput`
   background-color: white;
 `;
 
-function SubmitIdeaScreen({ route }) {
+function SubmitIdeaScreen({ route, navigation }) {
   const { userData } = route.params;
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
@@ -65,9 +65,9 @@ function SubmitIdeaScreen({ route }) {
       alert('Body cannot be empty.');
     } else {
       createIdea();
-      alert('Thank you for submitting!');
       setTitle('');
       setBody('');
+      navigation.navigate('Idea Submitted');
     }
   }
 
