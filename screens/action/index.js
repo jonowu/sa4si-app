@@ -32,9 +32,6 @@ function ActionScreen({ route, navigation }) {
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
 
-  const shareActionMessage = `I made a difference by completing the action "${title}"!
-    Download the #SA4SI app to join me!`;
-
   const CREATE_ENTRY = gql`
     mutation {
       createEntry(input: { data: { action: ${id}, user: ${userId} } }) {
@@ -88,7 +85,7 @@ function ActionScreen({ route, navigation }) {
       {!isCompleted ? (
         <Button title="Complete" onPress={() => completeAction()} />
       ) : (
-        <Button title="Share Action" onPress={() => share(shareActionMessage)} />
+        <Button title="Share Action" onPress={() => share(title)} />
       )}
     </ChildScreen>
   );

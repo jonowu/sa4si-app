@@ -3,18 +3,19 @@ import { Text, View, FlatList, Dimensions, Image } from 'react-native';
 import styled from 'styled-components/native';
 import { sdgs } from '../../data/sdgs';
 import Screen from '../../components/screen';
+import share from '../../utils/share';
+import Button from '../../components/button';
 import Confetti from '../../components/confetti';
 
 const ThankYouContainer = styled.View`
-  height: 210px;
   margin: 25px 0px 40px 0px;
+  padding: 25px 15px;
   border-radius: 12px;
   background-color: #343642;
   align-items: center;
 `;
 
 const ThankYouHeader = styled.Text`
-  margin: 15px;
   font-weight: bold;
   font-size: 30px;
   color: #feec00;
@@ -79,8 +80,15 @@ function ActionCompletionScreen({ route, navigation }) {
           renderItem={({ item }) => <Item sdg={item} />}
           keyExtractor={(item) => item.id}
           numColumns={2}
+          ListFooterComponent={<Button title="Share Action" onPress={() => share(title)} />}
+          ListFooterComponentStyle={{ margin: 30 }}
         />
-      )) || <ThankYou title={title} margin={25} />}
+      )) || (
+        <>
+          <ThankYou title={title} margin={25} />
+          <Button title="Share Action" onPress={() => share(title)} />
+        </>
+      )}
     </Screen>
   );
 }
