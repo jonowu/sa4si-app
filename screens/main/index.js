@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ProfileStackScreen from '../profile-stack';
 import ActionsStackScreen from '../actions-stack';
 import SdgsStackScreen from '../sdgs-stack';
-import NewsStackScreen from '../news-stack';
+import FeedStackScreen from '../feed-stack';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +21,7 @@ function MainScreen() {
             iconName = focused ? 'ios-list-box' : 'ios-list';
           } else if (route.name === 'Profile') {
             iconName = 'ios-person';
-          } else if (route.name == 'News') {
+          } else if (route.name == 'Feed') {
             iconName = 'ios-calendar';
           } else if (route.name == 'SDGs') {
             iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
@@ -39,7 +39,7 @@ function MainScreen() {
     >
       <Tab.Screen name="SDGs" component={SdgsStackScreen} />
       <Tab.Screen name="Actions" component={ActionsStackScreen} />
-      <Tab.Screen name="News" component={NewsStackScreen} />
+      <Tab.Screen name="Feed" component={FeedStackScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );

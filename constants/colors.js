@@ -9,6 +9,7 @@ const colors = {
   grey: '#D7D5D8', // Swinburne Light Grey
   darkgray: '#343642', //Swinburne Dark Gray
   swinRed: '#DC2D27', // Swinburne Red
+  lightGrey: '#E5E5E5',
   footertext: '#2E2E2D',
   footerlink: '#788EEC',
 };
