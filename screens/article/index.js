@@ -4,6 +4,8 @@ import Moment from 'moment';
 import styled from 'styled-components/native';
 
 import ChildScreen from '../../components/child-screen';
+import { colors } from '../../constants/colors';
+import { Heading, Body } from '../../components/typography/index';
 
 const HeaderContainer = styled.View`
   display: flex;
@@ -12,27 +14,27 @@ const HeaderContainer = styled.View`
   margin-bottom: 4px;
 `;
 
-const Heading = styled.Text`
-  text-align: left;
-  font-size: 28px;
-  font-weight: 700;
-  flex: 2;
-`;
-
-const Date = styled.Text`
-  text-align: right;
-  flex: 1;
-`;
-
 const Article = ({ route }) => {
   const { article } = route.params;
   const { title, created_at, body, image } = article;
 
   return (
-    <ChildScreen heading={title} headerColor="#DC2D27" headerImage={image ? { uri: image.formats.small.url } : null}>
+    <ChildScreen
+      heading={title}
+      headerColor={colors.swinRed}
+      headerImage={image ? { uri: image.formats.small.url } : null}
+    >
       <HeaderContainer>
-        {title && <Heading>{title}</Heading>}
-        {created_at && <Date>{Moment(created_at).format('DD/MM/YYYY')}</Date>}
+        {title && (
+          <Heading variant={2} color={colors.black}>
+            {title}
+          </Heading>
+        )}
+        {created_at && (
+          <Body variant={4} style={{ flex: 1, textAlign: 'right' }}>
+            {Moment(created_at).format('DD/MM/YYYY')}
+          </Body>
+        )}
       </HeaderContainer>
       {body && <Markdown>{body}</Markdown>}
     </ChildScreen>

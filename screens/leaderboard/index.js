@@ -6,11 +6,8 @@ import _ from 'lodash';
 import Screen from '../../components/screen';
 import ProfilePicture from '../../components/profile-picture';
 import { AuthenticatedContext } from '../../context/authenticated-context';
-
-const BoldText = styled.Text`
-  font-weight: bold;
-  font-size: 19px;
-`;
+import { colors } from '../../constants/colors';
+import { Body } from '../../components/typography/index';
 
 const LeaderboardContainer = styled.View`
   width: 100%;
@@ -58,7 +55,7 @@ const LeaderboardItemContainer = styled.View`
 
 const ItemRanking = styled.View`
   width: 15%;
-  background-color: ${({ backgroundColor }) => (backgroundColor ? backgroundColor : '#DBDAD8')};
+  background-color: ${({ backgroundColor }) => (backgroundColor ? backgroundColor : colors.grey)};
   align-items: center;
   justify-content: center;
 `;
@@ -123,26 +120,32 @@ function PodiumItem({ data, index }) {
   return (
     <LeaderboardPodiumItem>
       <PodiumRanking>
-        <BoldText style={{ fontSize: 14, color: 'white' }}>{getPodiumRanking(index)}</BoldText>
+        <Body variant={4} color={colors.white} style={{ fontWeight: 'bold' }}>
+          {getPodiumRanking(index)}
+        </Body>
       </PodiumRanking>
       <ProfilePicture
         source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
         firstName={data.firstName}
         lastName={data.lastName}
       />
-      <BoldText adjustsFontSizeToFit numberOfLines={1} style={{ width: '90%', textAlign: 'center' }}>
+      <Body
+        adjustsFontSizeToFit
+        numberOfLines={1}
+        style={{ width: '90%', textAlign: 'center', fontWeight: 'bold', fontSize: 19 }}
+      >
         {data.name}
-      </BoldText>
+      </Body>
     </LeaderboardPodiumItem>
   );
 }
 
 function LeaderboardItem({ data, index, current }) {
-  const color = current ? '#FEEC00' : '#DBDAD8';
+  const color = current ? colors.yellow : colors.grey;
   return (
     <LeaderboardItemContainer>
       <ItemRanking backgroundColor={color}>
-        <BoldText style={{ fontSize: 24 }}>{index + 1}</BoldText>
+        <Body style={{ fontSize: 24, fontWeight: 'bold' }}>{index + 1}</Body>
       </ItemRanking>
       <ItemPhotoContainer>
         <ProfilePicture
@@ -154,12 +157,14 @@ function LeaderboardItem({ data, index, current }) {
       </ItemPhotoContainer>
       <ItemTextContainer>
         <ItemName>
-          <BoldText adjustsFontSizeToFit numberOfLines={1} style={{ fontSize: 18 }}>
+          <Body variant={2} adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>
             {data.name}
-          </BoldText>
+          </Body>
         </ItemName>
         <ItemCount>
-          <BoldText style={{ fontSize: 14 }}>{data.count}</BoldText>
+          <Body variant={4} style={{ fontWeight: 'bold' }}>
+            {data.count}
+          </Body>
         </ItemCount>
       </ItemTextContainer>
     </LeaderboardItemContainer>

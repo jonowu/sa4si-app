@@ -7,7 +7,7 @@ import share from '../../utils/share';
 import Button from '../../components/button';
 import Confetti from '../../components/confetti';
 import { colors } from '../../constants/colors';
-import { Body, Heading, Subheading} from '../../components/typography';
+import { Body, Heading, Subheading } from '../../components/typography';
 
 const ThankYouContainer = styled.View`
   margin: 25px 0px 40px 0px;
@@ -27,14 +27,18 @@ const TileContainer = styled.TouchableOpacity`
 function ThankYou({ title, margin }) {
   return (
     <ThankYouContainer style={{ marginLeft: margin, marginRight: margin }}>
-      <Heading variant={2} color={colors.yellow}>Thank You!</Heading>
-      <Body style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
+      <Heading variant={2} color={colors.yellow}>
+        Thank You!
+      </Heading>
+      <Body style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
         Congratulations on completing this action!
       </Body>
-      <Subheading style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
+      <Subheading style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
         {title}
       </Subheading>
-      <Body style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>Keep up the great work!</Body>
+      <Body style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
+        Keep up the great work!
+      </Body>
     </ThankYouContainer>
   );
 }
@@ -58,7 +62,9 @@ function ActionCompletionScreen({ route, navigation }) {
             <>
               <ThankYou title={title} margin={0} />
               <View style={{ marginBottom: 15 }}>
-                <Heading color={colors.black} variant={3}>Contributed to these SDGs: </Heading>
+                <Heading color={colors.black} variant={3}>
+                  Contributed to these SDGs:{' '}
+                </Heading>
                 <Body variant={5}>For more information on an SDG, click on it to learn more!</Body>
               </View>
             </>

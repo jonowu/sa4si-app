@@ -47,12 +47,6 @@ const ProfileButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const ProfileButtonText = styled.Text`
-  left: 20px;
-  font-size: 17px;
-  font-weight: bold;
-`;
-
 const profileOptionList = [
   {
     title: 'Leaderboard',
@@ -234,7 +228,7 @@ function ProfileScreen({ navigation }) {
                       }
                     >
                       <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
-                      <ProfileButtonText>{item.title}</ProfileButtonText>
+                      <Body style={{ fontSize: 17, fontWeight: 'bold', left: 20 }}>{item.title}</Body>
                     </ProfileButton>
                   ))}
                 </ProfileButtonsContainer>

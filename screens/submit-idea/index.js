@@ -5,38 +5,20 @@ import Screen from '../../components/screen';
 import Button from '../../components/button';
 import { gql, useMutation } from '@apollo/client';
 import { AuthenticatedContext } from '../../context/authenticated-context';
+import { colors } from '../../constants/colors';
+import { Body } from '../../components/typography/index';
 
 const IdeaContainer = styled.View`
   margin: 20px;
   padding-bottom: 15px;
   border-radius: 12px;
-  background-color: #343642;
-  border-color: red;
-`;
-
-const GreetingText = styled.Text`
-  margin: 10px;
-  font-weight: bold;
-  font-size: 30px;
-  color: #feec00;
-`;
-
-const NormalText = styled.Text`
-  color: white;
-  font-size: 16px;
-  margin: 20px 10px 20px 10px;
-`;
-
-const QuestionText = styled.Text`
-  color: white;
-  font-size: 16px;
-  margin: 10px;
+  background-color: ${colors.darkgray};
 `;
 
 const TextBox = styled.TextInput`
   margin: 5px 10px 20px 10px;
   border-radius: 5px;
-  background-color: white;
+  background-color: ${colors.white};
 `;
 
 function SubmitIdeaScreen({ route, navigation }) {
@@ -75,13 +57,16 @@ function SubmitIdeaScreen({ route, navigation }) {
     <Screen>
       <ScrollView>
         <IdeaContainer>
-          <GreetingText>Hello {profileInfo.name} 👋</GreetingText>
-          <NormalText>
-            Feel free to leave us a message on how we can improve your experience with the app! Or request for an action
-            you think we should create!
-          </NormalText>
-
-          <QuestionText>What is your message about?</QuestionText>
+          <Body color={colors.yellow} style={{ margin: 10, fontWeight: 'bold', fontSize: 30 }}>
+            Hello {profileInfo.name} 👋
+          </Body>
+          <Body variant={3} color={colors.white} style={{ marginVertical: 20, marginHorizontal: 10 }}>
+            Feel free to drop us a message, request an action, or suggest an improvement! Submit them here, we would
+            love to hear from you.
+          </Body>
+          <Body variant={3} color={colors.white} style={{ margin: 10 }}>
+            What is your message about?
+          </Body>
           <TextBox
             value={title}
             onChangeText={(text) => setTitle(text)}
@@ -90,7 +75,9 @@ function SubmitIdeaScreen({ route, navigation }) {
             numberOfLines={3}
             maxLength={1500}
           />
-          <QuestionText>Tell us about it</QuestionText>
+          <Body variant={3} color={colors.white} style={{ margin: 10 }}>
+            Tell us about it
+          </Body>
           <TextBox
             value={body}
             onChangeText={(text) => setBody(text)}

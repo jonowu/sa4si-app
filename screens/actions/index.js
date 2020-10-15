@@ -110,7 +110,7 @@ function ActionsScreen({ navigation }) {
                 key={index}
                 mode="outlined"
                 height={30}
-                textStyle={{ color: 'black', fontSize: 14 }}
+                textStyle={{ color: colors.black, fontSize: 14 }}
                 selected={category.name === categoryFilter}
                 style={{
                   alignItems: 'center',
@@ -136,7 +136,7 @@ function ActionsScreen({ navigation }) {
                 key={index}
                 mode="outlined"
                 height={30}
-                textStyle={{ color: 'white', fontSize: 14 }}
+                textStyle={{ color: colors.white, fontSize: 14 }}
                 selected={item.number === sdgFilter}
                 style={{
                   backgroundColor: item.color,

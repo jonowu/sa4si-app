@@ -1,9 +1,10 @@
-import { Text, Image, FlatList, Dimensions } from 'react-native';
+import { Image, FlatList, Dimensions } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 
 import { sdgs } from '../../data/sdgs';
 import Screen from '../../components/screen';
+import { Body } from '../../components/typography/index';
 
 const TileContainer = styled.TouchableOpacity`
   height: ${Math.floor(Dimensions.get('window').height / 4)}px;
@@ -23,7 +24,9 @@ function SdgsScreen({ navigation }) {
 
   return (
     <Screen centeredHorizontally>
-      <Text style={{ padding: 5 }}>Tap on an SDG to learn more!</Text>
+      <Body variant={4} style={{ padding: 5 }}>
+        Tap on an SDG to learn more!
+      </Body>
       <FlatList
         style={{ width: '100%', paddingHorizontal: 10 }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}

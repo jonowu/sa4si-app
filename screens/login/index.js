@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -9,6 +9,8 @@ import { AuthenticatedContext } from '../../context/authenticated-context';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import Screen from '../../components/screen';
+import { colors } from '../../constants/colors';
+import { Body } from '../../components/typography/index';
 
 export default function LoginScreen({ navigation }) {
   const [emailOrUsername, setEmailOrUsername] = useState('');
@@ -62,12 +64,12 @@ export default function LoginScreen({ navigation }) {
           {({ setUser }) => <Button title="Log In" onPress={() => login(setUser)} />}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
-          <Text style={styles.footerText}>
+          <Body variant={3} color={colors.footertext}>
             Don’t have an account?{' '}
-            <Text onPress={onFooterLinkPress} style={styles.footerLink}>
+            <Body onPress={onFooterLinkPress} variant={3} color={colors.footerlink} style={{ fontWeight: 'bold' }}>
               Sign up
-            </Text>
-          </Text>
+            </Body>
+          </Body>
         </View>
       </View>
     </Screen>
@@ -86,39 +88,15 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     overflow: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     marginTop: 10,
     marginBottom: 10,
     marginLeft: 30,
     marginRight: 30,
     paddingLeft: 16,
   },
-  button: {
-    backgroundColor: '#788eec',
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 20,
-    height: 48,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   footerView: {
     alignItems: 'center',
     marginTop: 20,
-  },
-  footerText: {
-    fontSize: 16,
-    color: '#2e2e2d',
-  },
-  footerLink: {
-    color: '#788eec',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });

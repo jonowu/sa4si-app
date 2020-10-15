@@ -5,6 +5,8 @@ import { gql, useQuery } from '@apollo/client';
 import { Text, ScrollView, ActivityIndicator } from 'react-native';
 
 import Screen from '../../components/screen';
+import { colors } from '../../constants/colors';
+import { Body } from '../../components/typography/index';
 
 const TileList = styled.View`
   margin: 20px;
@@ -25,35 +27,17 @@ const TileImage = styled.Image`
 
 const TileAltImage = styled.View`
   height: 47%;
-  background-color: #dc2d27;
+  background-color: ${colors.swinRed};
 `;
 
 const TileText = styled.View`
   height: 53%;
-  background-color: #e5e5e5;
+  background-color: ${colors.grey};
 `;
 
 const TileTextTop = styled.View`
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const TileTextTopDate = styled.Text`
-  font-size: 12px;
-  margin-right: 20px;
-  margin-top: 25px;
-`;
-
-const TileTextTopTitle = styled.Text`
-  font-size: 22px;
-  font-weight: bold;
-  margin-left: 20px;
-  margin-top: 15px;
-`;
-
-const TileTextDescription = styled.Text`
-  font-size: 17px;
-  margin: 20px 20px;
 `;
 
 function NewsScreen({ navigation }) {
@@ -91,7 +75,9 @@ function NewsScreen({ navigation }) {
   return (
     <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
       <ScrollView style={{ width: '100%' }}>
-        <Text style={{ padding: 5, textAlign: 'center' }}>Tap on an article to learn more!</Text>
+        <Body variant={4} style={{ padding: 5, textAlign: 'center' }}>
+          Tap on an article to learn more!
+        </Body>
         <TileList>
           {articles.length > 0 ? (
             articles.map((article, i) => (
@@ -103,17 +89,21 @@ function NewsScreen({ navigation }) {
                 )}
                 <TileText>
                   <TileTextTop>
-                    <TileTextTopTitle>{article.title}</TileTextTopTitle>
-                    <TileTextTopDate>{Moment(article.created_at).format('DD/MM/YY')}</TileTextTopDate>
+                    <Body style={{ fontWeight: 'bold', fontSize: 22, marginLeft: 20, marginTop: 15 }}>
+                      {article.title}
+                    </Body>
+                    <Body style={{ fontSize: 12, marginRight: 20, marginTop: 25 }}>
+                      {Moment(article.created_at).format('DD/MM/YY')}
+                    </Body>
                   </TileTextTop>
-                  <TileTextDescription>{article.description}</TileTextDescription>
+                  <Body style={{ fontSize: 17, margin: 20 }}>{article.description}</Body>
                 </TileText>
               </TileContainer>
             ))
           ) : (
-            <Text style={{ fontSize: 20, margin: 20, textAlign: 'center' }}>
+            <Body variant={1} style={{ margin: 20, textAlign: 'center' }}>
               There are no news articles available right now, please check again later!
-            </Text>
+            </Body>
           )}
         </TileList>
       </ScrollView>

@@ -11,7 +11,7 @@ import ChildScreen from '../../components/child-screen';
 import SdgListItem from '../../components/sdg-list-item';
 import Checkbox from '../../components/action-checkbox';
 import { colors } from '../../constants/colors';
-import { Body, Heading, Subheading} from '../../components/typography';
+import { Body, Heading, Subheading } from '../../components/typography';
 
 const HeaderContainer = styled.View`
   display: flex;
@@ -56,10 +56,18 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <ChildScreen heading={title} headerColor= {colors.swinRed} headerImage={image ? { uri: image.formats.small.url } : null}>
+    <ChildScreen
+      heading={title}
+      headerColor={colors.swinRed}
+      headerImage={image ? { uri: image.formats.small.url } : null}
+    >
       <HeaderContainer>
         <HeaderRow>
-          {title && <Heading style={{flex: 2}} color={colors.black} variant={3}>{title}</Heading>}
+          {title && (
+            <Heading style={{ flex: 2 }} color={colors.black} variant={3}>
+              {title}
+            </Heading>
+          )}
           <Checkbox
             key={id}
             color={isCompleted ? colors.swinRed : colors.black}
