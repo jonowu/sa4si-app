@@ -1,31 +1,20 @@
 import React from 'react';
-import { Text, View, FlatList, Dimensions, Image } from 'react-native';
+import { View, FlatList, Dimensions, Image } from 'react-native';
 import styled from 'styled-components/native';
 import { sdgs } from '../../data/sdgs';
 import Screen from '../../components/screen';
 import share from '../../utils/share';
 import Button from '../../components/button';
 import Confetti from '../../components/confetti';
+import { colors } from '../../constants/colors';
+import { Body, Heading, Subheading} from '../../components/typography';
 
 const ThankYouContainer = styled.View`
   margin: 25px 0px 40px 0px;
-  padding: 25px 15px;
+  padding: 20px 15px;
   border-radius: 12px;
   background-color: #343642;
   align-items: center;
-`;
-
-const ThankYouHeader = styled.Text`
-  font-weight: bold;
-  font-size: 30px;
-  color: #feec00;
-`;
-
-const ThankYouDescription = styled.Text`
-  margin: 0px 15px;
-  font-size: 20px;
-  text-align: center;
-  color: white;
 `;
 
 const TileContainer = styled.TouchableOpacity`
@@ -38,14 +27,14 @@ const TileContainer = styled.TouchableOpacity`
 function ThankYou({ title, margin }) {
   return (
     <ThankYouContainer style={{ marginLeft: margin, marginRight: margin }}>
-      <ThankYouHeader>Thank You!</ThankYouHeader>
-      <ThankYouDescription adjustsFontSizeToFit numberOfLines={2}>
+      <Heading variant={2} color={colors.yellow}>Thank You!</Heading>
+      <Body style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
         Congratulations on completing this action!
-      </ThankYouDescription>
-      <ThankYouDescription adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>
+      </Body>
+      <Subheading style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
         {title}
-      </ThankYouDescription>
-      <ThankYouDescription adjustsFontSizeToFit>Keep up the great work!</ThankYouDescription>
+      </Subheading>
+      <Body style={{textAlign: "center"}} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>Keep up the great work!</Body>
     </ThankYouContainer>
   );
 }
@@ -69,8 +58,8 @@ function ActionCompletionScreen({ route, navigation }) {
             <>
               <ThankYou title={title} margin={0} />
               <View style={{ marginBottom: 15 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 22 }}>Contributed to these SDGs: </Text>
-                <Text style={{ fontSize: 10 }}>For more information on an SDG, click on it to learn more!</Text>
+                <Heading color={colors.black} variant={3}>Contributed to these SDGs: </Heading>
+                <Body variant={5}>For more information on an SDG, click on it to learn more!</Body>
               </View>
             </>
           }

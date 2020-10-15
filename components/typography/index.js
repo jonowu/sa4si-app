@@ -26,7 +26,7 @@ const H5 = styled(H)`
 `;
 
 const Heading = styled(Core)`
-  color: ${colors.yellow};
+  color: ${({ color }) => (color ? color : colors.yellow)};
   font-weight: bold;
   font-size: ${({ variant }) => {
     switch (variant) {
