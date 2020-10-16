@@ -3,11 +3,11 @@ import { gql, useQuery, useMutation } from '@apollo/client';
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Moment from 'moment';
-import { ButtonGroup } from 'react-native-elements';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { Body, Subheading } from '../../components/typography';
 import { colors } from '../../constants/colors';
+import ButtonGroup from '../../components/button-group';
 import ProfilePicture from '../../components/profile-picture';
 import Screen from '../../components/screen';
 
@@ -226,7 +226,6 @@ function FeedScreen({ navigation }) {
 
               return (
                 <TileContainer key={i} disabled>
-                  {console.log(entry.action)}
                   {entry.action.image ? (
                     <TileImage source={{ uri: entry.action.image.formats.small.url }} />
                   ) : (
@@ -234,16 +233,26 @@ function FeedScreen({ navigation }) {
                   )}
                   <TileTextContainer>
                     <TileTextTop>
-                      <ProfilePicture
-                        source={entry.user.profilePicture?.url ? { uri: entry.user.profilePicture?.url } : null}
-                        firstName={entry.user.firstName}
-                        lastName={entry.user.lastName}
-                        containerStyle={{ marginTop: 10, marginRight: 10 }}
-                        size="small"
-                      />
-                      <Subheading variant={3} style={{ marginTop: 18 }}>
-                        {entry.user.username}
-                      </Subheading>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('User Profile', {
+                            externalUsername: entry.user.username,
+                            externalUserId: entry.user.id,
+                          })
+                        }
+                        style={{ flexDirection: 'row' }}
+                      >
+                        <ProfilePicture
+                          source={entry.user.profilePicture?.url ? { uri: entry.user.profilePicture?.url } : null}
+                          firstName={entry.user.firstName}
+                          lastName={entry.user.lastName}
+                          containerStyle={{ marginTop: 10, marginRight: 10 }}
+                          size="small"
+                        />
+                        <Subheading variant={3} style={{ marginTop: 18 }}>
+                          {entry.user.username}
+                        </Subheading>
+                      </TouchableOpacity>
                       <Body variant={5} style={{ marginLeft: 'auto', marginTop: 22 }}>
                         {Moment(entry.created_at).fromNow()}
                       </Body>

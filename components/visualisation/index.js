@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
-import { ButtonGroup } from 'react-native-elements';
-import { VictoryPie, VictoryLabel } from './Victory';
 import { Svg } from 'react-native-svg';
+
+import { VictoryPie, VictoryLabel } from './Victory';
 
 const VisualisationContainer = styled.View`
   align-items: center;
@@ -10,18 +10,14 @@ const VisualisationContainer = styled.View`
   margin-top: 10px;
 `;
 
-function Visualisation({ data, navigation }) {
-  const [userVisualisationView, setUserVisualisationView] = useState(0);
-  const toggleSwitch = () => {
-    setUserVisualisationView(userVisualisationView ? 0 : 1);
-  };
+function Visualisation({ data, navigation, selectedIndex }) {
   const { totalSdgCount, userSdgCount, totalColors, userColors } = data;
   return (
     <VisualisationContainer>
       <Svg width={350} height={350}>
         <VictoryPie
           standalone={false}
-          data={(userVisualisationView && totalSdgCount) || userSdgCount}
+          data={selectedIndex === 0 ? userSdgCount : totalSdgCount}
           width={350}
           height={350}
           padAngle={2}
@@ -34,7 +30,7 @@ function Visualisation({ data, navigation }) {
               padding: 7,
             },
           }}
-          colorScale={(userVisualisationView && totalColors) || userColors}
+          colorScale={selectedIndex === 0 ? userColors : totalColors}
           events={[
             {
               target: 'data',
@@ -67,20 +63,12 @@ function Visualisation({ data, navigation }) {
         />
         <VictoryLabel
           textAnchor="middle"
-          style={{ fontSize: 24, fontWeight: 'bold', fill: '#DC2D28' }}
+          style={{ fontSize: 24, fontWeight: 'bold', fill: 'black' }}
           x={175}
           y={175}
-          text={(userVisualisationView && ["Everyone's", 'SDG Impact']) || ['Your SDG', 'Impact']}
+          text={selectedIndex === 0 ? ['Your SDG', 'Impact'] : ["Everyone's", 'SDG Impact']}
         />
       </Svg>
-      <ButtonGroup
-        onPress={toggleSwitch}
-        buttons={['You', 'All']}
-        selectedIndex={userVisualisationView}
-        selectedButtonStyle={{ backgroundColor: '#DC2D28' }}
-        containerStyle={{ width: '30%' }}
-        textStyle={{ fontSize: 13 }}
-      />
     </VisualisationContainer>
   );
 }

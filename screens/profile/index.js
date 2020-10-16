@@ -1,20 +1,18 @@
 import React, { useContext } from 'react';
+import _ from 'lodash';
 import { ActivityIndicator, Text, ScrollView } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
-import _ from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
-import client from '../../utils/apolloClient';
 import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { colors } from '../../constants/colors';
 import { Heading, Subheading, Body } from '../../components/typography';
-import { sdgs } from '../../data/sdgs';
+import client from '../../utils/apolloClient';
 import ProfilePicture from '../../components/profile-picture';
 import Screen from '../../components/screen';
-import Visualisation from '../../components/visualisation';
 
 const Container = styled.View`
   background: #343642;
@@ -49,6 +47,11 @@ const ProfileButton = styled.TouchableOpacity`
 
 const profileOptionList = [
   {
+    title: 'Profile Stats',
+    iconName: 'chart-donut',
+    screen: 'Profile Stats',
+  },
+  {
     title: 'Leaderboard',
     iconName: 'star-circle-outline',
     screen: 'Leaderboard',
@@ -77,26 +80,14 @@ const logout = async (value) => {
   value.setUser(false);
 };
 
-function ProfileScreen({ navigation }) {
-  const authContext = useContext(AuthenticatedContext);
-  const username = authContext.user.data.username;
-  const firstName = authContext.user.data.firstName;
-  const lastName = authContext.user.data.lastName;
+function ProfileScreen({ navigation, route }) {
+  const { externalUserId } = route.params || {};
 
-  const GET_ENTRIES = gql`
-    query GetEntries {
-      entries {
-        id
-        action {
-          relatedSdgs {
-            id
-          }
-        }
-        user {
-          username
-        }
-      }
-      self {
+  const authContext = useContext(AuthenticatedContext);
+
+  const GET_EXTERNAL_USER = gql`
+    query GetUser($userId: ID!) {
+      user(id: $userId) {
         id
         username
         firstName
@@ -114,7 +105,11 @@ function ProfileScreen({ navigation }) {
   const isFocused = useIsFocused();
   let fetched = false;
 
-  const { loading, error, data, refetch = {} } = useQuery(GET_ENTRIES);
+  const { loading, error, data, refetch = {} } = useQuery(GET_EXTERNAL_USER, {
+    // if an externalUserId is passed in use that, otherwise use the logged in user id
+    variables: { userId: externalUserId ? externalUserId : authContext.user.data.id },
+  });
+
   if (data && isFocused && !fetched) {
     refetch();
     fetched = true;
@@ -133,58 +128,30 @@ function ProfileScreen({ navigation }) {
   }
 
   if (data) {
-    const { entries } = data;
-    const { self } = data;
+    const { user } = data;
 
     const profileInfo = {
-      information: self.information,
-      funFacts: self.funFacts,
-      areasOfInterest: self.areasOfInterest,
-      profilePicture: self.profilePicture,
-      name: self.firstName,
-    };
-
-    const totalSdgActions = _.map(entries, 'action.relatedSdgs').flat();
-    const totalSdgCount = _(totalSdgActions)
-      .groupBy('id')
-      .map((items, x) => ({ y: items.length, x }))
-      .value();
-
-    const totalColorFiltered = sdgs.filter(({ number: id1 }) => totalSdgCount.some(({ x: id2 }) => id2 === id1));
-    const totalColors = _.map(totalColorFiltered, 'color');
-
-    const userEntries = _.filter(entries, function (entry) {
-      return entry != null && entry.user.username == username;
-    });
-    const userSdgActions = _.map(userEntries, 'action.relatedSdgs').flat();
-    const userSdgCount = _(userSdgActions)
-      .groupBy('id')
-      .map((items, x) => ({ y: items.length, x }))
-      .value();
-
-    const userColorFiltered = sdgs.filter(({ number: id1 }) => userSdgCount.some(({ x: id2 }) => id2 === id1));
-    const userColors = _.map(userColorFiltered, 'color');
-
-    const visualisationData = {
-      totalSdgCount: totalSdgCount,
-      userSdgCount: userSdgCount,
-      totalColors: totalColors,
-      userColors: userColors,
+      information: user.information,
+      funFacts: user.funFacts,
+      areasOfInterest: user.areasOfInterest,
+      profilePicture: user.profilePicture,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
     };
 
     return (
       <Screen centeredHorizontally centeredVertically>
         <ScrollView style={{ width: '100%' }}>
-          {userSdgCount.length > 0 && <Visualisation data={visualisationData} navigation={navigation} />}
           <Container>
             <ProfilePicture
               source={profileInfo.profilePicture?.url ? { uri: profileInfo.profilePicture?.url } : null}
-              firstName={firstName}
-              lastName={lastName}
+              firstName={profileInfo.firstName}
+              lastName={profileInfo.lastName}
               containerStyle={{ marginBottom: 10 }}
               size={120}
             />
-            {self.username && <Heading variant={3}>{self.username}</Heading>}
+            {profileInfo.username && <Heading variant={3}>{profileInfo.username}</Heading>}
             <ProfileInfoContainer>
               {!_.isEmpty(profileInfo.information) && (
                 <>
@@ -192,7 +159,7 @@ function ProfileScreen({ navigation }) {
                     Bio
                   </Subheading>
                   <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
-                    {self.information}
+                    {profileInfo.information}
                   </Body>
                 </>
               )}
@@ -217,23 +184,25 @@ function ProfileScreen({ navigation }) {
                 </>
               )}
             </ProfileInfoContainer>
-            <AuthenticatedContext.Consumer>
-              {(value) => (
-                <ProfileButtonsContainer>
-                  {profileOptionList.map((item, i) => (
-                    <ProfileButton
-                      key={i}
-                      onPress={() =>
-                        item.title === 'Logout' ? logout(value) : navigation.navigate(item.screen, { profileInfo })
-                      }
-                    >
-                      <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
-                      <Body style={{ fontSize: 17, fontWeight: 'bold', left: 20 }}>{item.title}</Body>
-                    </ProfileButton>
-                  ))}
-                </ProfileButtonsContainer>
-              )}
-            </AuthenticatedContext.Consumer>
+            {!externalUserId && (
+              <AuthenticatedContext.Consumer>
+                {(value) => (
+                  <ProfileButtonsContainer>
+                    {profileOptionList.map((item, i) => (
+                      <ProfileButton
+                        key={i}
+                        onPress={() =>
+                          item.title === 'Logout' ? logout(value) : navigation.navigate(item.screen, { profileInfo })
+                        }
+                      >
+                        <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
+                        <Body style={{ fontSize: 17, fontWeight: 'bold', left: 20 }}>{item.title}</Body>
+                      </ProfileButton>
+                    ))}
+                  </ProfileButtonsContainer>
+                )}
+              </AuthenticatedContext.Consumer>
+            )}
           </Container>
         </ScrollView>
       </Screen>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ActivityIndicator, Text, ScrollView } from 'react-native';
+import { ActivityIndicator, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { gql, useQuery } from '@apollo/client';
 import _ from 'lodash';
@@ -8,6 +8,7 @@ import ProfilePicture from '../../components/profile-picture';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { colors } from '../../constants/colors';
 import { Body } from '../../components/typography/index';
+import { useNavigation } from '@react-navigation/native';
 
 const LeaderboardContainer = styled.View`
   width: 100%;
@@ -18,7 +19,7 @@ const LeaderboardPodium = styled.View`
   flex-direction: row;
 `;
 
-const LeaderboardPodiumItem = styled.View`
+const LeaderboardPodiumItem = styled.TouchableOpacity`
   width: 33%;
   align-items: center;
 `;
@@ -60,37 +61,19 @@ const ItemRanking = styled.View`
   justify-content: center;
 `;
 
-const ItemPhotoContainer = styled.View`
-  width: 20%;
-  align-items: center;
-  justify-content: center;
-  padding-left: 15px;
-`;
-
 const ItemTextContainer = styled.View`
   width: 65%;
   flex-direction: row;
-  padding-left: 15px;
-`;
-
-const ItemName = styled.View`
-  width: 80%;
-  justify-content: center;
-`;
-
-const ItemCount = styled.View`
-  width: 20%;
-  align-items: center;
-  justify-content: center;
 `;
 
 function getPodiumRanking(index) {
-  if (index === 0) {
-    return '1st';
-  } else if (index === 1) {
-    return '2nd';
-  } else {
-    return '3rd';
+  switch (index) {
+    case 0:
+      return '1st';
+    case 1:
+      return '2nd';
+    case 2:
+      return '3rd';
   }
 }
 
@@ -117,8 +100,12 @@ const GET_ENTRIES = gql`
 `;
 
 function PodiumItem({ data, index }) {
+  const navigation = useNavigation();
+
   return (
-    <LeaderboardPodiumItem>
+    <LeaderboardPodiumItem
+      onPress={() => navigation.navigate({ name: 'User Profile', params: { externalUserId: data.id } })}
+    >
       <PodiumRanking>
         <Body variant={4} color={colors.white} style={{ fontWeight: 'bold' }}>
           {getPodiumRanking(index)}
@@ -141,31 +128,38 @@ function PodiumItem({ data, index }) {
 }
 
 function LeaderboardItem({ data, index, current }) {
+  const navigation = useNavigation();
+
   const color = current ? colors.yellow : colors.grey;
   return (
     <LeaderboardItemContainer>
       <ItemRanking backgroundColor={color}>
         <Body style={{ fontSize: 24, fontWeight: 'bold' }}>{index + 1}</Body>
       </ItemRanking>
-      <ItemPhotoContainer>
-        <ProfilePicture
-          source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
-          firstName={data.firstName ? data.firstName : '?'}
-          lastName={data.lastName ? data.lastName : '?'}
-          size="medium"
-        />
-      </ItemPhotoContainer>
+      <ProfilePicture
+        source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
+        firstName={data.firstName ? data.firstName : '?'}
+        lastName={data.lastName ? data.lastName : '?'}
+        containerStyle={{ marginTop: 5, marginLeft: 10 }}
+        size="medium"
+        onPress={() => navigation.navigate({ name: 'User Profile', params: { externalUserId: data.id } })}
+      />
       <ItemTextContainer>
-        <ItemName>
-          <Body variant={2} adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate({ name: 'User Profile', params: { externalUserId: data.id } })}
+        >
+          <Body
+            variant={2}
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={{ fontWeight: 'bold', marginLeft: 10, marginTop: 18 }}
+          >
             {data.name}
           </Body>
-        </ItemName>
-        <ItemCount>
-          <Body variant={4} style={{ fontWeight: 'bold' }}>
-            {data.count}
-          </Body>
-        </ItemCount>
+        </TouchableOpacity>
+        <Body variant={4} style={{ fontWeight: 'bold', marginLeft: 'auto', marginRight: 16, marginTop: 20 }}>
+          {data.count}
+        </Body>
       </ItemTextContainer>
     </LeaderboardItemContainer>
   );
@@ -201,6 +195,7 @@ function LeaderboardScreen() {
           firstName: entries[0].user.firstName,
           lastName: entries[0].user.lastName,
           profilePicture: entries[0].user.profilePicture,
+          id: entries[0].user.id,
         };
       })
       .sortBy(entries, 'count')
