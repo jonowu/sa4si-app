@@ -7,12 +7,13 @@ import ProfileScreen from '../profile';
 import ProfileStatsScreen from '../profile-stats';
 import SubmitIdeaCompletionScreen from '../submit-idea-completion';
 import SubmitIdeaScreen from '../submit-idea';
+import { headerStyling } from '../../constants/headerStyling';
 
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
   return (
-    <ProfileStack.Navigator initialRouteName="Profile">
+    <ProfileStack.Navigator initialRouteName="Profile" screenOptions={headerStyling}>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="User Profile" component={ProfileScreen} />
       <ProfileStack.Screen name="Profile Stats" component={ProfileStatsScreen} />

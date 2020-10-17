@@ -6,6 +6,7 @@ import ProfileStackScreen from '../profile-stack';
 import ActionsStackScreen from '../actions-stack';
 import SdgsStackScreen from '../sdgs-stack';
 import FeedStackScreen from '../feed-stack';
+import {colors} from '../../constants/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,23 +25,27 @@ function MainScreen() {
           } else if (route.name == 'Feed') {
             iconName = 'ios-calendar';
           } else if (route.name == 'SDGs') {
-            iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
+            iconName = 'ios-pie';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'green',
-        inactiveTintColor: 'gray',
+        activeTintColor: colors.yellow,
+        inactiveTintColor: colors.white,
+        style:{
+          backgroundColor: colors.darkgray,
+        },
+
       }}
-      initialRouteName="Actions"
+      initialRouteName='Actions'
       lazy={false}
     >
-      <Tab.Screen name="SDGs" component={SdgsStackScreen} />
-      <Tab.Screen name="Actions" component={ActionsStackScreen} />
-      <Tab.Screen name="Feed" component={FeedStackScreen} />
-      <Tab.Screen name="Profile" component={ProfileStackScreen} />
+      <Tab.Screen name='Actions' component={ActionsStackScreen} />
+      <Tab.Screen name='Feed' component={FeedStackScreen} />
+      <Tab.Screen name='SDGs' component={SdgsStackScreen} />
+      <Tab.Screen name='Profile' component={ProfileStackScreen} />
     </Tab.Navigator>
   );
 }

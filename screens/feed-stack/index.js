@@ -4,12 +4,13 @@ import React from 'react';
 import ArticleScreen from '../article';
 import FeedScreen from '../feed';
 import ProfileScreen from '../profile';
+import { headerStyling } from '../../constants/headerStyling';
 
 const FeedStack = createStackNavigator();
 
 function FeedStackScreen() {
   return (
-    <FeedStack.Navigator initialRouteName="Feed">
+    <FeedStack.Navigator initialRouteName="Feed" screenOptions={headerStyling}>
       <FeedStack.Screen name="Feed" component={FeedScreen} />
       <FeedStack.Screen name="Article" component={ArticleScreen} />
       <FeedStack.Screen name="User Profile" component={ProfileScreen} />

@@ -9,6 +9,7 @@ import MainScreen from './screens/main';
 import RegistrationScreen from './screens/registration';
 import client from './utils/apolloClient';
 import AsyncStorage from '@react-native-community/async-storage';
+import { headerStyling } from './constants/headerStyling';
 
 const Stack = createStackNavigator();
 
@@ -51,7 +52,7 @@ function App() {
           {user ? (
             <MainScreen />
           ) : (
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={headerStyling}>
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Registration" component={RegistrationScreen} />
             </Stack.Navigator>
