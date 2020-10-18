@@ -11,6 +11,7 @@ const TileContainer = styled.TouchableOpacity`
   width: ${Math.floor(Dimensions.get('window').width / 2.2)}px;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const numColumns = 2;
