@@ -9,7 +9,7 @@ import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { colors } from '../../constants/colors';
-import { Heading, Subheading, Body } from '../../components/typography';
+import { Heading, Subheading, Body, Label } from '../../components/typography';
 import client from '../../utils/apolloClient';
 import ProfilePicture from '../../components/profile-picture';
 import Screen from '../../components/screen';
@@ -116,7 +116,7 @@ function ProfileScreen({ navigation, route }) {
   }
   if (loading) {
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ActivityIndicator size="large" />
       </Screen>
     );
@@ -151,11 +151,15 @@ function ProfileScreen({ navigation, route }) {
               containerStyle={{ marginBottom: 10 }}
               size={120}
             />
-            {profileInfo.username && <Heading variant={3}>{profileInfo.username}</Heading>}
+            {profileInfo.username && (
+              <Heading primary variant={3} style={{ textAlign: 'center' }}>
+                {`${_.capitalize(profileInfo.firstName)} ${_.capitalize(profileInfo.lastName)}`}
+              </Heading>
+            )}
             <ProfileInfoContainer>
               {!_.isEmpty(profileInfo.information) && (
                 <>
-                  <Subheading variant={2} color={colors.blue}>
+                  <Subheading bold variant={2} color={colors.blue}>
                     Bio
                   </Subheading>
                   <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
@@ -165,7 +169,7 @@ function ProfileScreen({ navigation, route }) {
               )}
               {!_.isEmpty(profileInfo.areasOfInterest) && (
                 <>
-                  <Subheading variant={2} color={colors.purple}>
+                  <Subheading bold variant={2} color={colors.purple}>
                     Areas of Interest
                   </Subheading>
                   <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
@@ -175,7 +179,7 @@ function ProfileScreen({ navigation, route }) {
               )}
               {!_.isEmpty(profileInfo.funFacts) && (
                 <>
-                  <Subheading variant={2} color={colors.green}>
+                  <Subheading bold variant={2} color={colors.green}>
                     Sustainable Fun Facts
                   </Subheading>
                   <Body variant={3} color={colors.white} style={{ textAlign: 'center', marginBottom: 8 }}>
@@ -195,8 +199,13 @@ function ProfileScreen({ navigation, route }) {
                           item.title === 'Logout' ? logout(value) : navigation.navigate(item.screen, { profileInfo })
                         }
                       >
-                        <MaterialCommunityIcons name={item.iconName} size={35} color="black" />
-                        <Body style={{ fontSize: 17, fontWeight: 'bold', left: 20 }}>{item.title}</Body>
+                        <MaterialCommunityIcons
+                          name={item.iconName}
+                          size={35}
+                          color="black"
+                          style={{ marginRight: 10 }}
+                        />
+                        <Label>{item.title}</Label>
                       </ProfileButton>
                     ))}
                   </ProfileButtonsContainer>

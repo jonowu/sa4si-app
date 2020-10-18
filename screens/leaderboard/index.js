@@ -7,7 +7,7 @@ import Screen from '../../components/screen';
 import ProfilePicture from '../../components/profile-picture';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import { colors } from '../../constants/colors';
-import { Body } from '../../components/typography/index';
+import { Label } from '../../components/typography/index';
 import { useNavigation } from '@react-navigation/native';
 
 const LeaderboardContainer = styled.View`
@@ -25,12 +25,12 @@ const LeaderboardPodiumItem = styled.TouchableOpacity`
 `;
 
 const PodiumRanking = styled.View`
+  background-color: ${({ color }) => color};
   position: absolute;
   right: 0px;
   width: 32px;
   height: 32px;
   border-radius: 16px;
-  background: #dc2d28;
   align-items: center;
   justify-content: center;
   z-index: 1;
@@ -69,11 +69,11 @@ const ItemTextContainer = styled.View`
 function getPodiumRanking(index) {
   switch (index) {
     case 0:
-      return '1st';
+      return { name: '1st', color: colors.gold };
     case 1:
-      return '2nd';
+      return { name: '2nd', color: colors.silver };
     case 2:
-      return '3rd';
+      return { name: '3rd', color: colors.bronze };
   }
 }
 
@@ -106,23 +106,19 @@ function PodiumItem({ data, index }) {
     <LeaderboardPodiumItem
       onPress={() => navigation.navigate({ name: 'User Profile', params: { externalUserId: data.id } })}
     >
-      <PodiumRanking>
-        <Body variant={4} color={colors.white} style={{ fontWeight: 'bold' }}>
-          {getPodiumRanking(index)}
-        </Body>
+      <PodiumRanking color={getPodiumRanking(index).color}>
+        <Label bold variant={4} color={colors.white}>
+          {getPodiumRanking(index).name}
+        </Label>
       </PodiumRanking>
       <ProfilePicture
         source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
         firstName={data.firstName}
         lastName={data.lastName}
       />
-      <Body
-        adjustsFontSizeToFit
-        numberOfLines={1}
-        style={{ width: '90%', textAlign: 'center', fontWeight: 'bold', fontSize: 19 }}
-      >
-        {data.name}
-      </Body>
+      <Label adjustsFontSizeToFit numberOfLines={1} style={{ width: '90%', textAlign: 'center' }}>
+        {_.capitalize(data.firstName)}
+      </Label>
     </LeaderboardPodiumItem>
   );
 }
@@ -134,7 +130,7 @@ function LeaderboardItem({ data, index, current }) {
   return (
     <LeaderboardItemContainer>
       <ItemRanking backgroundColor={color}>
-        <Body style={{ fontSize: 24, fontWeight: 'bold' }}>{index + 1}</Body>
+        <Label bold>{index + 1}</Label>
       </ItemRanking>
       <ProfilePicture
         source={data.profilePicture ? { uri: data.profilePicture?.url } : null}
@@ -148,18 +144,13 @@ function LeaderboardItem({ data, index, current }) {
         <TouchableOpacity
           onPress={() => navigation.navigate({ name: 'User Profile', params: { externalUserId: data.id } })}
         >
-          <Body
-            variant={2}
-            adjustsFontSizeToFit
-            numberOfLines={1}
-            style={{ fontWeight: 'bold', marginLeft: 10, marginTop: 18 }}
-          >
-            {data.name}
-          </Body>
+          <Label variant={2} numberOfLines={1} style={{ marginRight: 32, marginLeft: 10, marginTop: 18 }}>
+            {_.capitalize(data.firstName)}
+          </Label>
         </TouchableOpacity>
-        <Body variant={4} style={{ fontWeight: 'bold', marginLeft: 'auto', marginRight: 16, marginTop: 20 }}>
+        <Label bold variant={3} style={{ marginLeft: 'auto', marginRight: 16, marginTop: 20 }}>
           {data.count}
-        </Body>
+        </Label>
       </ItemTextContainer>
     </LeaderboardItemContainer>
   );
@@ -167,13 +158,13 @@ function LeaderboardItem({ data, index, current }) {
 
 function LeaderboardScreen() {
   const authContext = useContext(AuthenticatedContext);
-  const username = authContext.user.data.username;
+  const userId = authContext.user.data.id;
 
   const { loading, error, data } = useQuery(GET_ENTRIES);
 
   if (loading) {
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ActivityIndicator size="large" />
       </Screen>
     );
@@ -187,27 +178,28 @@ function LeaderboardScreen() {
   if (data) {
     const { entries } = data;
     const leaderboard = _(entries)
-      .groupBy('user.username')
-      .map((entries, name) => {
+      .groupBy('user.id')
+      .map((entries, id) => {
         return {
-          name,
+          id,
           count: entries.length,
           firstName: entries[0].user.firstName,
           lastName: entries[0].user.lastName,
           profilePicture: entries[0].user.profilePicture,
-          id: entries[0].user.id,
         };
       })
       .sortBy(entries, 'count')
       .reverse()
       .value();
 
+    console.log(leaderboard);
+
     const top3Users = leaderboard.slice(0, 3);
     const top10Users = leaderboard.slice(0, 10);
 
-    const isUserOutsideTop10 = !top10Users.some((user) => user.name === username);
-    const currentUserData = leaderboard.find((user) => user.name === username);
-    const currentUserRanking = leaderboard.findIndex((user) => user.name === username);
+    const isUserOutsideTop10 = !top10Users.some((user) => parseInt(user.id) === userId);
+    const currentUserData = leaderboard.find((user) => parseInt(user.id) === userId);
+    const currentUserRanking = leaderboard.findIndex((user) => parseInt(user.id) === userId);
 
     return (
       <Screen>
@@ -222,7 +214,7 @@ function LeaderboardScreen() {
             <LeaderboardList>
               {top10Users &&
                 top10Users.map((user, i) => {
-                  const isCurrent = username === user.name;
+                  const isCurrent = parseInt(user.id) === userId;
                   return <LeaderboardItem data={user} key={i} index={i} current={isCurrent} />;
                 })}
               {currentUserData && currentUserData && isUserOutsideTop10 && (

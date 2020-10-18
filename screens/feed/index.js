@@ -3,9 +3,10 @@ import { gql, useQuery, useMutation } from '@apollo/client';
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Moment from 'moment';
+import { capitalize } from 'lodash';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
-import { Body, Subheading } from '../../components/typography';
+import { Body, Heading } from '../../components/typography';
 import { colors } from '../../constants/colors';
 import ButtonGroup from '../../components/button-group';
 import ProfilePicture from '../../components/profile-picture';
@@ -39,8 +40,8 @@ const TileTextTop = styled.View`
 `;
 
 const TileAltImage = styled.View`
-  height: 47%;
-  background-color: #dc2d27;
+  height: 100px;
+  background-color: ${colors.grey};
 `;
 
 function KudosButton({ userId, entryId, kudosCount, isKudosGivenByCurrentUser, userIdsThatGaveKudos }) {
@@ -85,9 +86,9 @@ function KudosButton({ userId, entryId, kudosCount, isKudosGivenByCurrentUser, u
   return (
     <View>
       <View style={{ borderColor: colors.grey, borderTopWidth: 2, borderBottomWidth: 2, paddingVertical: 8 }}>
-        <Text style={{ textAlign: 'center' }}>
+        <Body variant={4} style={{ textAlign: 'center' }}>
           {noOfKudos === 1 ? `${noOfKudos} person gave kudos.` : `${noOfKudos} people gave kudos.`}
-        </Text>
+        </Body>
       </View>
       <TouchableOpacity
         disabled={isKudosGiven}
@@ -102,9 +103,13 @@ function KudosButton({ userId, entryId, kudosCount, isKudosGivenByCurrentUser, u
         }}
       >
         {isKudosGiven ? (
-          <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>👏 You gave kudos</Text>
+          <Body bold variant={4} style={{ textAlign: 'center' }}>
+            👏 You gave kudos
+          </Body>
         ) : (
-          <Text style={{ textAlign: 'center' }}>👏 Give kudos</Text>
+          <Body variant={4} style={{ textAlign: 'center' }}>
+            👏 Give kudos
+          </Body>
         )}
       </TouchableOpacity>
     </View>
@@ -115,12 +120,12 @@ function FeedScreen({ navigation }) {
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
 
-  const buttons = ['News', 'Social'];
+  const buttons = ['Social', 'News'];
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const GET_FEED_ENTRIES = gql`
     query GetFeedEntries {
-      entries(limit: 10, sort: "created_at:desc") {
+      entries(limit: 30, sort: "created_at:desc") {
         id
         created_at
         user {
@@ -162,7 +167,7 @@ function FeedScreen({ navigation }) {
 
   if (loading) {
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ActivityIndicator size="large" />
       </Screen>
     );
@@ -174,7 +179,7 @@ function FeedScreen({ navigation }) {
   }
 
   return (
-    <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+    <Screen centeredHorizontally>
       <ButtonGroup
         onPress={(value) => setSelectedIndex(value)}
         selectedIndex={selectedIndex}
@@ -182,40 +187,6 @@ function FeedScreen({ navigation }) {
         containerStyle={{ height: 30 }}
       />
       {selectedIndex === 0 && (
-        <ScrollView style={{ width: '100%' }}>
-          <TileList>
-            {articles.length > 0 ? (
-              articles.map((article, i) => (
-                <TileContainer key={i} onPress={() => navigation.navigate('Article', { article: article })}>
-                  {article.image ? (
-                    <TileImage source={{ uri: article.image.formats.small.url }}></TileImage>
-                  ) : (
-                    <TileAltImage></TileAltImage>
-                  )}
-                  <TileTextContainer>
-                    <TileTextTop>
-                      <Subheading variant={3} style={{ marginTop: 18 }}>
-                        {article.title}
-                      </Subheading>
-                      <Body variant={5} style={{ marginLeft: 'auto', marginTop: 22 }}>
-                        {Moment(article.created_at).fromNow()}
-                      </Body>
-                    </TileTextTop>
-                    <Body variant={3} style={{ margin: 20 }}>
-                      {article.description}
-                    </Body>
-                  </TileTextContainer>
-                </TileContainer>
-              ))
-            ) : (
-              <Text style={{ fontSize: 20, margin: 20, textAlign: 'center' }}>
-                There are no news articles available right now, please check again later!
-              </Text>
-            )}
-          </TileList>
-        </ScrollView>
-      )}
-      {selectedIndex === 1 && (
         <ScrollView style={{ width: '100%' }}>
           <TileList>
             {entries.map((entry, i) => {
@@ -240,7 +211,6 @@ function FeedScreen({ navigation }) {
                             externalUserId: entry.user.id,
                           })
                         }
-                        style={{ flexDirection: 'row' }}
                       >
                         <ProfilePicture
                           source={entry.user.profilePicture?.url ? { uri: entry.user.profilePicture?.url } : null}
@@ -249,9 +219,19 @@ function FeedScreen({ navigation }) {
                           containerStyle={{ marginTop: 10, marginRight: 10 }}
                           size="small"
                         />
-                        <Subheading variant={3} style={{ marginTop: 18 }}>
-                          {entry.user.username}
-                        </Subheading>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('User Profile', {
+                            externalUsername: entry.user.username,
+                            externalUserId: entry.user.id,
+                          })
+                        }
+                        style={{ flex: 1, marginTop: 16, marginRight: 8 }}
+                      >
+                        <Heading variant={4} numberOfLines={1}>
+                          {capitalize(entry.user.firstName)}
+                        </Heading>
                       </TouchableOpacity>
                       <Body variant={5} style={{ marginLeft: 'auto', marginTop: 22 }}>
                         {Moment(entry.created_at).fromNow()}
@@ -269,6 +249,40 @@ function FeedScreen({ navigation }) {
                 </TileContainer>
               );
             })}
+          </TileList>
+        </ScrollView>
+      )}
+      {selectedIndex === 1 && (
+        <ScrollView style={{ width: '100%' }}>
+          <TileList>
+            {articles.length > 0 ? (
+              articles.map((article, i) => (
+                <TileContainer key={i} onPress={() => navigation.navigate('Article', { article: article })}>
+                  {article.image ? (
+                    <TileImage source={{ uri: article.image.formats.small.url }}></TileImage>
+                  ) : (
+                    <TileAltImage />
+                  )}
+                  <TileTextContainer>
+                    <TileTextTop>
+                      <Heading variant={4} style={{ flex: 1, marginTop: 18, marginRight: 5 }} numberOfLines={3}>
+                        {article.title}
+                      </Heading>
+                      <Body variant={5} style={{ marginLeft: 'auto', marginTop: 22 }}>
+                        {Moment(article.created_at).fromNow()}
+                      </Body>
+                    </TileTextTop>
+                    <Body variant={3} style={{ margin: 20 }}>
+                      {article.description}
+                    </Body>
+                  </TileTextContainer>
+                </TileContainer>
+              ))
+            ) : (
+              <Body variant={4} style={{ margin: 20, textAlign: 'center' }}>
+                There are no news articles available right now, please check again later!
+              </Body>
+            )}
           </TileList>
         </ScrollView>
       )}

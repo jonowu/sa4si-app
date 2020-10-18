@@ -2,6 +2,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { ApolloProvider } from '@apollo/client';
+import { AppLoading } from 'expo';
+import { useFonts } from 'expo-font';
+import { Montserrat_700Bold } from '@expo-google-fonts/montserrat';
+import {
+  OpenSans_400Regular,
+  OpenSans_400Regular_Italic,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+} from '@expo-google-fonts/open-sans';
 
 import { AuthenticatedContext } from './context/authenticated-context';
 import LoginScreen from './screens/login';
@@ -14,6 +23,14 @@ import { headerStyling } from './constants/headerStyling';
 const Stack = createStackNavigator();
 
 function App() {
+  const [fontsLoaded] = useFonts({
+    Montserrat_700Bold,
+    OpenSans_400Regular,
+    OpenSans_400Regular_Italic,
+    OpenSans_600SemiBold,
+    OpenSans_700Bold,
+  });
+
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -41,8 +58,8 @@ function App() {
     setLoading(false);
   }, []);
 
-  if (loading) {
-    return <></>;
+  if (!fontsLoaded || loading) {
+    return <AppLoading />;
   }
 
   return (

@@ -10,8 +10,11 @@ const colors = {
   darkgray: '#343642', //Swinburne Dark Gray
   swinRed: '#DC2D27', // Swinburne Red
   lightGrey: '#E5E5E5',
-  footertext: '#2E2E2D',
-  footerlink: '#788EEC',
+  footerLink: '#788EEC',
+  darkGreen: '#008000',
+  gold: '#D4AF37',
+  silver: '#A9A9A9',
+  bronze: '#CD7F32',
 };
 
 export { colors };

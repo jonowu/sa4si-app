@@ -1,11 +1,11 @@
 import React from 'react';
-import Markdown from 'react-native-markdown-display';
 import Moment from 'moment';
 import styled from 'styled-components/native';
 
-import ChildScreen from '../../components/child-screen';
 import { colors } from '../../constants/colors';
 import { Heading, Body } from '../../components/typography/index';
+import ChildScreen from '../../components/child-screen';
+import Markdown from '../../components/markdown';
 
 const HeaderContainer = styled.View`
   display: flex;
@@ -19,11 +19,7 @@ const Article = ({ route }) => {
   const { title, created_at, body, image } = article;
 
   return (
-    <ChildScreen
-      heading={title}
-      headerColor={colors.swinRed}
-      headerImage={image ? { uri: image.formats.small.url } : null}
-    >
+    <ChildScreen heading={title} headerImage={image ? { uri: image.formats.small.url } : null}>
       <HeaderContainer>
         {title && (
           <Heading variant={2} color={colors.black}>

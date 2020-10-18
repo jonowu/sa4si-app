@@ -12,6 +12,7 @@ const ButtonGroup = ({ buttons, selectedIndex, onPress }) => (
     containerStyle={{ height: 30 }}
     selectedButtonStyle={{ backgroundColor: colors.yellow }}
     selectedTextStyle={{ color: colors.black }}
+    textStyle={{ fontFamily: 'OpenSans_600SemiBold' }}
   />
 );
 

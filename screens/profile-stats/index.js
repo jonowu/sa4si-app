@@ -55,7 +55,7 @@ function ProfileStatsScreen({ navigation }) {
   }
   if (loading) {
     return (
-      <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Screen centeredHorizontally centeredVertically>
         <ActivityIndicator size="large" />
       </Screen>
     );

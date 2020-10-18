@@ -11,13 +11,12 @@ const StyledTouchableOpacity = styled.TouchableOpacity`
   background-color: #feec00;
   padding: 15px 40px;
   border-radius: 40px;
-  box-shadow: 1px 2px grey;
   max-width: 320px;
 `;
 
 const ButtonTitle = styled.Text`
-  font-weight: 600;
   font-size: 18px;
+  font-family: 'Montserrat_700Bold';
 `;
 
 const Button = ({ title, onPress }) => (

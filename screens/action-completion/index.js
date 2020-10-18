@@ -27,18 +27,37 @@ const TileContainer = styled.TouchableOpacity`
 function ThankYou({ title, margin }) {
   return (
     <ThankYouContainer style={{ marginLeft: margin, marginRight: margin }}>
-      <Heading variant={2} color={colors.yellow}>
+      <Heading primary variant={2}>
         Thank You!
       </Heading>
-      <Body style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
-        Congratulations on completing this action!
-      </Body>
-      <Subheading style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
+      <Subheading
+        variant={3}
+        style={{ textAlign: 'center' }}
+        color={colors.white}
+        adjustsFontSizeToFit
+        numberOfLines={2}
+      >
+        Congratulations on completing the following action:
+      </Subheading>
+      <Subheading
+        bold
+        variant={3}
+        style={{ textAlign: 'center' }}
+        color={colors.yellow}
+        adjustsFontSizeToFit
+        numberOfLines={2}
+      >
         {title}
       </Subheading>
-      <Body style={{ textAlign: 'center' }} color={colors.white} adjustsFontSizeToFit numberOfLines={2}>
+      <Subheading
+        variant={3}
+        style={{ textAlign: 'center' }}
+        color={colors.white}
+        adjustsFontSizeToFit
+        numberOfLines={2}
+      >
         Keep up the great work!
-      </Body>
+      </Subheading>
     </ThankYouContainer>
   );
 }
@@ -62,10 +81,10 @@ function ActionCompletionScreen({ route, navigation }) {
             <>
               <ThankYou title={title} margin={0} />
               <View style={{ marginBottom: 15 }}>
-                <Heading color={colors.black} variant={3}>
-                  Contributed to these SDGs:{' '}
-                </Heading>
-                <Body variant={5}>For more information on an SDG, click on it to learn more!</Body>
+                <Subheading bold variant={3}>
+                  You contributed to these SDGs:
+                </Subheading>
+                <Body variant={5}>Tap on an SDG to learn more!</Body>
               </View>
             </>
           }
@@ -76,7 +95,7 @@ function ActionCompletionScreen({ route, navigation }) {
           keyExtractor={(item) => item.id}
           numColumns={2}
           ListFooterComponent={<Button title="Share Action" onPress={() => share(title)} />}
-          ListFooterComponentStyle={{ margin: 30 }}
+          ListFooterComponentStyle={{ margin: 10 }}
         />
       )) || (
         <>

@@ -97,9 +97,9 @@ export default function RegistrationScreen({ navigation }) {
           {({ setUser }) => <Button title="Create Account" onPress={() => register(setUser)} />}
         </AuthenticatedContext.Consumer>
         <View style={styles.footerView}>
-          <Body variant={3} color={colors.footertext}>
+          <Body variant={3}>
             Already got an account?{' '}
-            <Body onPress={onFooterLinkPress} variant={3} color={colors.footerlink} style={{ fontWeight: 'bold' }}>
+            <Body bold onPress={onFooterLinkPress} variant={3} color={colors.footerLink}>
               Log in
             </Body>
           </Body>

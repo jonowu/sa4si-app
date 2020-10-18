@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckBox } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { colors } from '../../constants/colors';
 
 const Checkbox = ({ title, onPress, isCompleted }) => (
   <CheckBox
@@ -12,12 +13,15 @@ const Checkbox = ({ title, onPress, isCompleted }) => (
     iconType="material-community"
     checkedIcon="checkbox-marked-circle-outline"
     uncheckedIcon="circle-outline"
-    checkedColor="#DC2D27"
+    checkedColor={colors.darkGreen}
     uncheckedColor="black"
     textStyle={{
+      fontWeight: 'normal',
       marginLeft: 5,
-      color: isCompleted ? '#DC2D27' : 'black',
+      color: isCompleted ? colors.darkGreen : 'black',
       fontSize: 14,
+      fontFamily: 'OpenSans_600SemiBold',
+      textAlign: 'right',
     }}
     containerStyle={{
       borderColor: 'white',

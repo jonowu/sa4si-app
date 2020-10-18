@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 
+import { Heading } from '../../components/typography';
 import Screen from '../../components/screen';
+import { colors } from '../../constants/colors';
 
 const HeaderContainer = styled.View`
-  background-color: ${({ headerColor }) => headerColor};
+  background-color: ${({ headerColor }) => (headerColor ? headerColor : colors.darkgray)};
   flex-shrink: 1;
+  padding: ${({ heading }) => (heading ? '40px 0 60px 20px' : '0')};
 `;
 
 const ImageHeaderContainer = styled.View`
@@ -22,13 +25,6 @@ const SdgImage = styled.Image`
 
 const HeaderImage = styled.Image`
   height: 100%;
-`;
-
-const Heading = styled.Text`
-  color: white;
-  font-size: 20px;
-  margin: 40px 0 60px 20px;
-  font-weight: 600;
 `;
 
 const BodyContainer = styled.View`
@@ -57,9 +53,9 @@ const ChildScreen = ({ headerColor, sdgImageSrc, children, heading, headerImage 
 
 const ScreenWithHeading = ({ headerColor, heading, sdgImageSrc }) => {
   return (
-    <HeaderContainer headerColor={headerColor}>
+    <HeaderContainer headerColor={headerColor} heading={heading}>
       {sdgImageSrc && <SdgImage source={sdgImageSrc} resizeMode="contain" />}
-      {heading && <Heading>{heading}</Heading>}
+      {heading && <Heading primary>{heading}</Heading>}
     </HeaderContainer>
   );
 };
@@ -78,10 +74,6 @@ ChildScreen.propTypes = {
   heading: PropTypes.string,
   sdgImageSrc: PropTypes.node,
   headerImage: PropTypes.object,
-};
-
-ChildScreen.defaultProps = {
-  headerColor: 'gray',
 };
 
 export default ChildScreen;

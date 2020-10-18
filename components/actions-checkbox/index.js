@@ -14,14 +14,20 @@ const Checkbox = ({ title, onPress, isCompleted }) => (
     uncheckedIcon="circle-outline"
     checkedColor="black"
     uncheckedColor="black"
+    titleProps={{
+      numberOfLines: 2,
+    }}
     textStyle={{
+      width: '80%',
+      fontWeight: 'normal',
       marginLeft: 20,
+      color: 'black',
+      fontSize: 15,
+      fontFamily: 'OpenSans_600SemiBold',
     }}
     containerStyle={{
       margin: 0,
       marginBottom: 10,
-      paddingHorizontal: 40,
-      paddingVertical: 10,
       borderRadius: 20,
     }}
   />

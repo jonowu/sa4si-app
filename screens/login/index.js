@@ -66,7 +66,7 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.footerView}>
           <Body variant={3} color={colors.footertext}>
             Don’t have an account?{' '}
-            <Body onPress={onFooterLinkPress} variant={3} color={colors.footerlink} style={{ fontWeight: 'bold' }}>
+            <Body bold onPress={onFooterLinkPress} variant={3} color={colors.footerLink}>
               Sign up
             </Body>
           </Body>

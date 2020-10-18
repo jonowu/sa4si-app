@@ -8,7 +8,7 @@ import { View, ScrollView } from 'react-native';
 import { AuthenticatedContext } from '../../context/authenticated-context';
 import Screen from '../../components/screen';
 import Checkbox from '../../components/actions-checkbox';
-import { H3 } from '../../components/typography';
+import { Label } from '../../components/typography';
 import { colors } from '../../constants/colors';
 
 function ActionsScreen({ navigation }) {
@@ -76,7 +76,7 @@ function ActionsScreen({ navigation }) {
             return action;
           }
         } else if (categoryFilter) {
-          //if the relatedCatogoryNames includes the current category filter
+          //if the relatedCategoryNames includes the current category filter
           if (relatedCategoryNames.includes(categoryFilter)) return action;
         } else {
           // return all the actions if no filter
@@ -97,11 +97,10 @@ function ActionsScreen({ navigation }) {
 
   if (error) {
     console.error(error);
-    return <H3>Error</H3>;
   }
 
   return (
-    <Screen centeredHorizontally centeredVertically>
+    <Screen>
       <View style={{ marginTop: 5, marginBottom: 5, marginHorizontal: 10, flexDirection: 'row' }}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {categories.map((category, index) => {
@@ -110,7 +109,7 @@ function ActionsScreen({ navigation }) {
                 key={index}
                 mode="outlined"
                 height={30}
-                textStyle={{ color: colors.black, fontSize: 14 }}
+                textStyle={{ color: colors.black, fontSize: 14, fontFamily: 'OpenSans_600SemiBold' }}
                 selected={category.name === categoryFilter}
                 style={{
                   alignItems: 'center',
@@ -136,7 +135,7 @@ function ActionsScreen({ navigation }) {
                 key={index}
                 mode="outlined"
                 height={30}
-                textStyle={{ color: colors.white, fontSize: 14 }}
+                textStyle={{ color: colors.white, fontSize: 14, fontFamily: 'OpenSans_600SemiBold' }}
                 selected={item.number === sdgFilter}
                 style={{
                   backgroundColor: item.color,
@@ -154,32 +153,30 @@ function ActionsScreen({ navigation }) {
           })}
         </ScrollView>
       </View>
-      <ScrollView>
-        <View>
-          {filteredActions && filteredActions.length > 0 ? (
-            filteredActions.map((action, i) => {
-              const isCompleted = completedActions.includes(action.id);
-              return (
-                <Checkbox
-                  key={i}
-                  title={action.title}
-                  isCompleted={isCompleted}
-                  onPress={() =>
-                    navigation.navigate('Action', {
-                      action: action,
-                      isCompleted: isCompleted,
-                      completedActions: completedActions,
-                    })
-                  }
-                />
-              );
-            })
-          ) : (
-            <H3 style={{ margin: 20, textAlign: 'center' }}>
-              There are no actions matching that filter, please try another!
-            </H3>
-          )}
-        </View>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 5 }}>
+        {filteredActions && filteredActions.length > 0 ? (
+          filteredActions.map((action, i) => {
+            const isCompleted = completedActions.includes(action.id);
+            return (
+              <Checkbox
+                key={i}
+                title={action.title}
+                isCompleted={isCompleted}
+                onPress={() =>
+                  navigation.navigate('Action', {
+                    action: action,
+                    isCompleted: isCompleted,
+                    completedActions: completedActions,
+                  })
+                }
+              />
+            );
+          })
+        ) : (
+          <Label style={{ margin: 20, textAlign: 'center' }}>
+            There are no actions matching that filter, please try another!
+          </Label>
+        )}
       </ScrollView>
     </Screen>
   );

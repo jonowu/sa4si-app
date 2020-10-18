@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Markdown from 'react-native-markdown-display';
 import { gql } from '@apollo/client';
 import { sdgs as sdgData } from '../../data/sdgs';
 
 import ChildScreen from '../../components/child-screen';
+import Markdown from '../../components/markdown';
 import Query from '../../components/query';
 
 const GET_SDG_QUERY = gql`

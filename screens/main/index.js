@@ -6,7 +6,7 @@ import ProfileStackScreen from '../profile-stack';
 import ActionsStackScreen from '../actions-stack';
 import SdgsStackScreen from '../sdgs-stack';
 import FeedStackScreen from '../feed-stack';
-import {colors} from '../../constants/colors';
+import { colors } from '../../constants/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,18 +34,20 @@ function MainScreen() {
       tabBarOptions={{
         activeTintColor: colors.yellow,
         inactiveTintColor: colors.white,
-        style:{
+        style: {
           backgroundColor: colors.darkgray,
         },
-
+        labelStyle: {
+          fontFamily: 'Montserrat_700Bold',
+        },
       }}
-      initialRouteName='Actions'
+      initialRouteName="Actions"
       lazy={false}
     >
-      <Tab.Screen name='Actions' component={ActionsStackScreen} />
-      <Tab.Screen name='Feed' component={FeedStackScreen} />
-      <Tab.Screen name='SDGs' component={SdgsStackScreen} />
-      <Tab.Screen name='Profile' component={ProfileStackScreen} />
+      <Tab.Screen name="Actions" component={ActionsStackScreen} />
+      <Tab.Screen name="Feed" component={FeedStackScreen} />
+      <Tab.Screen name="SDGs" component={SdgsStackScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );
 }

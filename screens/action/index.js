@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import Markdown from 'react-native-markdown-display';
 import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
-import share from '../../utils/share';
-import Button from '../../components/button';
-import ChildScreen from '../../components/child-screen';
-import SdgListItem from '../../components/sdg-list-item';
-import Checkbox from '../../components/action-checkbox';
-import { colors } from '../../constants/colors';
 import { Body, Heading, Subheading } from '../../components/typography';
+import { colors } from '../../constants/colors';
+import Button from '../../components/button';
+import Checkbox from '../../components/action-checkbox';
+import ChildScreen from '../../components/child-screen';
+import Markdown from '../../components/markdown';
+import SdgListItem from '../../components/sdg-list-item';
+import share from '../../utils/share';
 
 const HeaderContainer = styled.View`
   display: flex;
@@ -27,7 +27,7 @@ const HeaderRow = styled.View`
 
 function ActionScreen({ route, navigation }) {
   const { action, completedActions, isCompleted } = route.params;
-  const { id, title, body, relatedSdgs, image, relatedCategories } = action;
+  const { id, title, body, relatedSdgs, image } = action;
 
   const authContext = useContext(AuthenticatedContext);
   const userId = authContext.user.data.id;
@@ -56,11 +56,7 @@ function ActionScreen({ route, navigation }) {
   }
 
   return (
-    <ChildScreen
-      heading={title}
-      headerColor={colors.swinRed}
-      headerImage={image ? { uri: image.formats.small.url } : null}
-    >
+    <ChildScreen heading={title} headerImage={image ? { uri: image.formats.small.url } : null}>
       <HeaderContainer>
         <HeaderRow>
           {title && (
@@ -70,29 +66,32 @@ function ActionScreen({ route, navigation }) {
           )}
           <Checkbox
             key={id}
-            color={isCompleted ? colors.swinRed : colors.black}
-            title={!isCompleted ? 'Complete' : 'Completed'}
+            title={!isCompleted ? 'Incomplete' : 'Completed'}
             isCompleted={isCompleted}
             onPress={() => completeAction()}
           />
         </HeaderRow>
-        {relatedCategories && <Body variant={3}>#{relatedCategories[0].name}</Body>}
       </HeaderContainer>
       <Markdown>{body}</Markdown>
       {relatedSdgs && relatedSdgs.length > 0 && (
         <View style={{ marginTop: 30, marginBottom: 15 }}>
-          <Subheading variant={3}>Related SDGs </Subheading>
-          <Body variant={5}>For more information on an SDG, click on it to learn more!</Body>
+          <Subheading bold variant={3}>
+            Related SDGs
+          </Subheading>
+          <Body variant={4}>For more information on an SDG, click on it to learn more!</Body>
         </View>
       )}
-      {relatedSdgs &&
-        relatedSdgs.map((sdg, i) => (
-          <SdgListItem
-            key={i}
-            number={sdg.id}
-            onPress={() => navigation.navigate('SDGs', { screen: 'SDG', params: { sdgNo: sdg.id } })}
-          />
-        ))}
+      <View style={{ marginBottom: 5 }}>
+        {relatedSdgs &&
+          relatedSdgs.map((sdg, i) => (
+            <SdgListItem
+              key={i}
+              number={sdg.id}
+              onPress={() => navigation.navigate('SDGs', { screen: 'SDG', params: { sdgNo: sdg.id } })}
+              style={{ marginBottom: 5 }}
+            />
+          ))}
+      </View>
       {!isCompleted ? (
         <Button title="Complete" onPress={() => completeAction()} />
       ) : (
