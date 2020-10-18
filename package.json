@@ -33,6 +33,7 @@
     "react-native-confetti": "^0.1.0",
     "react-native-elements": "^2.0.4",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-markdown-display": "^6.1.6",
     "react-native-paper": "^4.2.0",
     "react-native-reanimated": "~1.9.0",

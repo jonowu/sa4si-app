@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
-import Screen from '../../components/screen';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import { colors } from '../../constants/colors';
@@ -73,7 +72,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   return (
-    <Screen scrollable>
+    <KeyboardAwareScrollView extraScrollHeight={100}>
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <Input label="Username" onChangeText={(text) => setUsername(text)} value={username} autoCapitalize="none" />
         <Input label="First Name" onChangeText={(text) => setFirstName(text)} value={firstName} autoCapitalize="none" />
@@ -96,7 +95,7 @@ export default function RegistrationScreen({ navigation }) {
         <AuthenticatedContext.Consumer>
           {({ setUser }) => <Button title="Create Account" onPress={() => register(setUser)} />}
         </AuthenticatedContext.Consumer>
-        <View style={styles.footerView}>
+        <View style={{ alignItems: 'center', marginBottom: 6 }}>
           <Body variant={3}>
             Already got an account?{' '}
             <Body bold onPress={onFooterLinkPress} variant={3} color={colors.footerLink}>
@@ -105,31 +104,6 @@ export default function RegistrationScreen({ navigation }) {
           </Body>
         </View>
       </View>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  logo: {
-    flex: 1,
-    height: 120,
-    width: 90,
-    alignSelf: 'center',
-    margin: 30,
-  },
-  input: {
-    height: 48,
-    borderRadius: 5,
-    overflow: 'hidden',
-    backgroundColor: colors.white,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
-    paddingLeft: 16,
-  },
-  footerView: {
-    alignItems: 'center',
-    marginTop: 10,
-  },
-});
