@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { ScrollView, TextInput, View } from 'react-native';
+import {  TextInput, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
 import { AuthenticatedContext } from '../../context/authenticated-context';
@@ -51,7 +52,7 @@ function SubmitIdeaScreen({ route, navigation }) {
 
   return (
     <Screen>
-      <ScrollView>
+      <KeyboardAwareScrollView extraScrollHeight={100}>
         <IdeaContainer>
           <Heading primary style={{ margin: 10 }}>
             Hello {profileInfo.firstName} 👋
@@ -94,7 +95,7 @@ function SubmitIdeaScreen({ route, navigation }) {
           </View>
           <Button title="Send" onPress={() => SubmitIdea()} />
         </IdeaContainer>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </Screen>
   );
 }

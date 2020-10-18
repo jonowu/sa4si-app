@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
@@ -119,37 +120,43 @@ function EditProfileScreen({ route }) {
 
   return (
     <Screen>
-      <ScrollView style={{ padding: 20 }}>
-        <HeaderView>
-          <TouchableOpacity onPress={openImagePickerAsync}>
-            <ProfilePicture
-              size="large"
-              source={
-                // three conditions; profilePictureToUpload exists,
-                // userContext.profilePicture?.url exists, or null.
-                profilePictureToUpload?.localUri
-                  ? { uri: profilePictureToUpload?.localUri }
-                  : currentProfilePicture
-                  ? { uri: currentProfilePicture }
-                  : null
-              }
-              firstName={userContext.firstName}
-              lastName={userContext.lastName}
-            />
-            <MaterialCommunityIcons
-              name="pencil-circle"
-              size={30}
-              style={{ position: 'absolute', top: 55, left: 45 }}
-            />
-          </TouchableOpacity>
-        </HeaderView>
-        <Input label="Information" value={information} onChangeText={(value) => setInformation(value)} />
-        <Input label="Areas Of Interest" value={areasOfInterest} onChangeText={(value) => setAreasOfInterest(value)} />
-        <Input label="Fun Facts" value={funFacts} onChangeText={(value) => setFunFacts(value)} />
-        <AuthenticatedContext.Consumer>
-          {({ setUser }) => <Button title="Save Changes" disabled={loading} onPress={() => updateUser(setUser)} />}
-        </AuthenticatedContext.Consumer>
-      </ScrollView>
+      <KeyboardAwareScrollView extraScrollHeight={60}>
+        <View style={{ padding: 15 }}>
+          <HeaderView>
+            <TouchableOpacity onPress={openImagePickerAsync}>
+              <ProfilePicture
+                size="large"
+                source={
+                  // three conditions; profilePictureToUpload exists,
+                  // userContext.profilePicture?.url exists, or null.
+                  profilePictureToUpload?.localUri
+                    ? { uri: profilePictureToUpload?.localUri }
+                    : currentProfilePicture
+                    ? { uri: currentProfilePicture }
+                    : null
+                }
+                firstName={userContext.firstName}
+                lastName={userContext.lastName}
+              />
+              <MaterialCommunityIcons
+                name="pencil-circle"
+                size={30}
+                style={{ position: 'absolute', top: 55, left: 45 }}
+              />
+            </TouchableOpacity>
+          </HeaderView>
+          <Input label="Information" value={information} onChangeText={(value) => setInformation(value)} />
+          <Input
+            label="Areas Of Interest"
+            value={areasOfInterest}
+            onChangeText={(value) => setAreasOfInterest(value)}
+          />
+          <Input label="Fun Facts" value={funFacts} onChangeText={(value) => setFunFacts(value)} />
+          <AuthenticatedContext.Consumer>
+            {({ setUser }) => <Button title="Save Changes" disabled={loading} onPress={() => updateUser(setUser)} />}
+          </AuthenticatedContext.Consumer>
+        </View>
+      </KeyboardAwareScrollView>
     </Screen>
   );
 }
