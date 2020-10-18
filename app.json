@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sustainability-app-demo",
-    "slug": "sustainability-app-demo",
+    "name": "Swinburne Actions for Sustainability Impact",
+    "slug": "sa4si",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
