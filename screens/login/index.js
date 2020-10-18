@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <Input
           label="E-mail or Username"

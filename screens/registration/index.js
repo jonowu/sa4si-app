@@ -72,7 +72,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAwareScrollView extraScrollHeight={100}>
+    <KeyboardAwareScrollView keyboardShouldPersistTaps="always" extraScrollHeight={100}>
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
         <Input label="Username" onChangeText={(text) => setUsername(text)} value={username} autoCapitalize="none" />
         <Input label="First Name" onChangeText={(text) => setFirstName(text)} value={firstName} autoCapitalize="none" />

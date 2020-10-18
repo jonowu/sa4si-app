@@ -120,7 +120,7 @@ function EditProfileScreen({ route }) {
 
   return (
     <Screen>
-      <KeyboardAwareScrollView extraScrollHeight={60}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="always" extraScrollHeight={60}>
         <View style={{ padding: 15 }}>
           <HeaderView>
             <TouchableOpacity onPress={openImagePickerAsync}>

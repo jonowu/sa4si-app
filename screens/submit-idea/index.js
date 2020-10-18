@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import {  TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from 'styled-components/native';
 
@@ -52,7 +52,7 @@ function SubmitIdeaScreen({ route, navigation }) {
 
   return (
     <Screen>
-      <KeyboardAwareScrollView extraScrollHeight={100}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="always" extraScrollHeight={100}>
         <IdeaContainer>
           <Heading primary style={{ margin: 10 }}>
             Hello {profileInfo.firstName} 👋
