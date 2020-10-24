@@ -27,7 +27,7 @@ function Visualisation({ data, navigation, selectedIndex }) {
             labels: {
               fill: 'black',
               fontSize: 12,
-              padding: 7,
+              padding: 12,
             },
           }}
           colorScale={selectedIndex === 0 ? userColors : totalColors}
@@ -66,7 +66,7 @@ function Visualisation({ data, navigation, selectedIndex }) {
           style={{ fontSize: 24, fontWeight: 'bold', fill: 'black' }}
           x={175}
           y={175}
-          text={selectedIndex === 0 ? ['Your SDG', 'Impact'] : ["Everyone's", 'SDG Impact']}
+          text={selectedIndex === 0 ? ['Your SDG', 'Impact'] : ["SA4SI", "Community", 'Impact']}
         />
       </Svg>
     </VisualisationContainer>

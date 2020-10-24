@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { colors } from '../../constants/colors';
 
-const Input = ({ label, value, onChangeText, secureTextEntry, autoCapitalize }) => (
+const Input = ({ label, value, onChangeText, secureTextEntry, autoCapitalize, secureIcon }) => (
   <InputElement
     secureTextEntry={secureTextEntry}
     label={label}
@@ -29,6 +29,7 @@ const Input = ({ label, value, onChangeText, secureTextEntry, autoCapitalize }) 
     containerStyle={{ marginBottom: 10 }}
     autoCapitalize={autoCapitalize}
     renderErrorMessage={false}
+    rightIcon={secureIcon}
   />
 );
 

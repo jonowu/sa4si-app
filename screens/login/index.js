@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Ionicons } from '@expo/vector-icons';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
@@ -14,6 +15,7 @@ import { Body } from '../../components/typography/index';
 export default function LoginScreen({ navigation }) {
   const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [secure, setSecure] = useState(true);
 
   const onFooterLinkPress = () => {
     navigation.navigate('Registration');
@@ -54,10 +56,12 @@ export default function LoginScreen({ navigation }) {
         />
         <Input
           label="Password"
-          secureTextEntry
+          secureTextEntry={secure}
           autoCapitalize="none"
           onChangeText={(text) => setPassword(text)}
           value={password}
+          secureIcon ={ <Ionicons style={{ padding: 10 }}
+          name={secure ? "ios-eye-off" : "ios-eye"} size={25} color={colors.grey} onPress={() => setSecure(!secure)}/>}
         />
         <AuthenticatedContext.Consumer>
           {({ setUser }) => <Button title="Log In" onPress={() => login(setUser)} />}

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Ionicons } from '@expo/vector-icons';
 
 import { api } from '../../data';
 import { AuthenticatedContext } from '../../context/authenticated-context';
@@ -18,6 +19,9 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [securePassword, setSecurePassword] = useState(true);
+  const [secureConfirmPassword, setSecureConfirmPassword] = useState(true);
+
 
   const onFooterLinkPress = () => {
     navigation.navigate('Login');
@@ -79,18 +83,22 @@ export default function RegistrationScreen({ navigation }) {
         <Input label="Last Name" onChangeText={(text) => setLastName(text)} value={lastName} autoCapitalize="none" />
         <Input label="E-mail" onChangeText={(text) => setEmail(text)} value={email} autoCapitalize="none" />
         <Input
-          secureTextEntry
+          secureTextEntry={securePassword}
           label="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
           autoCapitalize="none"
+          secureIcon ={ <Ionicons style={{ padding: 10 }}
+          name={securePassword ? "ios-eye-off" : "ios-eye"} size={25} color={colors.grey} onPress={() => setSecurePassword(!securePassword)}/>}
         />
         <Input
-          secureTextEntry
+          secureTextEntry={secureConfirmPassword}
           label="Confirm Password"
           onChangeText={(text) => setConfirmPassword(text)}
           value={confirmPassword}
           autoCapitalize="none"
+          secureIcon ={ <Ionicons style={{ padding: 10 }}
+          name={secureConfirmPassword ? "ios-eye-off" : "ios-eye"} size={25} color={colors.grey} onPress={() => setSecureConfirmPassword(!secureConfirmPassword)}/>}
         />
         <AuthenticatedContext.Consumer>
           {({ setUser }) => <Button title="Create Account" onPress={() => register(setUser)} />}

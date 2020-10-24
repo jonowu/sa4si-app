@@ -145,13 +145,13 @@ function EditProfileScreen({ route }) {
               />
             </TouchableOpacity>
           </HeaderView>
-          <Input label="Information" value={information} onChangeText={(value) => setInformation(value)} />
+          <Input label="Bio" value={information} onChangeText={(value) => setInformation(value)} />
           <Input
             label="Areas Of Interest"
             value={areasOfInterest}
             onChangeText={(value) => setAreasOfInterest(value)}
           />
-          <Input label="Fun Facts" value={funFacts} onChangeText={(value) => setFunFacts(value)} />
+          <Input label="Sustainable Fun Facts" value={funFacts} onChangeText={(value) => setFunFacts(value)} />
           <AuthenticatedContext.Consumer>
             {({ setUser }) => <Button title="Save Changes" disabled={loading} onPress={() => updateUser(setUser)} />}
           </AuthenticatedContext.Consumer>
