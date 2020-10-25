@@ -67,6 +67,11 @@ const profileOptionList = [
     screen: 'Submit an Idea',
   },
   {
+    title: 'About the App',
+    iconName: 'information-outline',
+    screen: 'About',
+  },
+  {
     title: 'Logout',
     iconName: 'logout-variant',
     screen: '',

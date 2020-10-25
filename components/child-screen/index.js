@@ -55,7 +55,11 @@ const ScreenWithHeading = ({ headerColor, heading, sdgImageSrc }) => {
   return (
     <HeaderContainer headerColor={headerColor} heading={heading}>
       {sdgImageSrc && <SdgImage source={sdgImageSrc} resizeMode="contain" />}
-      {heading && <Heading primary>{heading}</Heading>}
+      {heading && (
+        <Heading variant={2} primary>
+          {heading}
+        </Heading>
+      )}
     </HeaderContainer>
   );
 };
@@ -69,7 +73,7 @@ const ScreenWithHeaderImage = ({ headerImage }) => {
 };
 
 ChildScreen.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   headerColor: PropTypes.string,
   heading: PropTypes.string,
   sdgImageSrc: PropTypes.node,
