@@ -106,9 +106,9 @@ function ProfileStatsScreen({ navigation }) {
           containerStyle={{ height: 30 }}
         />
 
-        {userSdgCount.length > 0 && (
+        
           <Visualisation data={visualisationData} navigation={navigation} selectedIndex={selectedIndex} />
-        )}
+  
       </Screen>
     );
   }

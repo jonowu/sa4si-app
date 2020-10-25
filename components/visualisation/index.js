@@ -66,7 +66,7 @@ function Visualisation({ data, navigation, selectedIndex }) {
           style={{ fontSize: 24, fontWeight: 'bold', fill: 'black' }}
           x={175}
           y={175}
-          text={selectedIndex === 0 ? ['Your SDG', 'Impact'] : ["SA4SI", "Community", 'Impact']}
+          text={selectedIndex === 0 ? userSdgCount.length > 0 ? ['Your SDG', 'Impact'] : ['Complete some actions', 'to see your impact'] : ["SA4SI", "Community", 'Impact']}
         />
       </Svg>
     </VisualisationContainer>

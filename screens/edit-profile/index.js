@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
@@ -155,6 +155,7 @@ function EditProfileScreen({ route }) {
           <AuthenticatedContext.Consumer>
             {({ setUser }) => <Button title="Save Changes" disabled={loading} onPress={() => updateUser(setUser)} />}
           </AuthenticatedContext.Consumer>
+          {loading && <ActivityIndicator size='large'/>}
         </View>
       </KeyboardAwareScrollView>
     </Screen>
