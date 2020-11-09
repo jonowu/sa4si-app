@@ -183,16 +183,14 @@ function LeaderboardScreen() {
         return {
           id,
           count: entries.length,
-          firstName: entries[0].user.firstName,
-          lastName: entries[0].user.lastName,
-          profilePicture: entries[0].user.profilePicture,
+          firstName: entries[0]?.user?.firstName,
+          lastName: entries[0]?.user?.lastName,
+          profilePicture: entries[0]?.user?.profilePicture,
         };
       })
       .sortBy(entries, 'count')
       .reverse()
       .value();
-
-    console.log(leaderboard);
 
     const top3Users = leaderboard.slice(0, 3);
     const top10Users = leaderboard.slice(0, 10);

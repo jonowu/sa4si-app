@@ -79,7 +79,7 @@ function ProfileStatsScreen({ navigation }) {
     const totalColors = _.map(totalColorFiltered, 'color');
 
     const userEntries = _.filter(entries, function (entry) {
-      return entry != null && entry.user.username == username;
+      return entry != null && entry?.user?.username == username;
     });
     const userSdgActions = _.map(userEntries, 'action.relatedSdgs').flat();
     const userSdgCount = _(userSdgActions)
@@ -106,9 +106,7 @@ function ProfileStatsScreen({ navigation }) {
           containerStyle={{ height: 30 }}
         />
 
-        
-          <Visualisation data={visualisationData} navigation={navigation} selectedIndex={selectedIndex} />
-  
+        <Visualisation data={visualisationData} navigation={navigation} selectedIndex={selectedIndex} />
       </Screen>
     );
   }
