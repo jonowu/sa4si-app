@@ -2,7 +2,7 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { View, ScrollView } from 'react-native';
 
-import { Body } from '../components/typography';
+import { Body } from '../components/Typography';
 import { FeedItem } from '../components/FeedItem';
 
 const Feed = ({ navigation }) => {

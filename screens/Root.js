@@ -84,11 +84,8 @@ const Main = () => (
   >
     <Tab.Screen name="SDGs" component={SdgsStack} />
     <Tab.Screen name="Actions" component={ActionsStack} />
-
     <Tab.Screen name="Feed" component={FeedStack} />
     <Tab.Screen name="Profile" component={ProfileStack} />
-    {/*     <Tab.Screen name="Feed" component={FeedStackScreen} />
-    <Tab.Screen name="Profile" component={ProfileStackScreen} />   */}
   </Tab.Navigator>
 );
 

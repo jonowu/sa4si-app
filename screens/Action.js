@@ -3,11 +3,11 @@ import { View } from 'react-native';
 import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components/native';
 
-import { Heading } from '../components/typography';
+import { Heading } from '../components/Typography';
 import { colors } from '../constants/colors';
 import { Button } from '../components/Button';
 import { ChildScreen } from '../components/ChildScreen';
-import share from '../utils/share';
+import { share } from '../utils/share';
 import { DocumentRenderer } from '../components/DocumentRenderer';
 import { useUser } from '../hooks/useUser';
 import { GET_USER_ACTIONS } from '../screens/Actions';

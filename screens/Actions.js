@@ -4,7 +4,7 @@ import { Chip } from 'react-native-paper';
 import { View, ScrollView } from 'react-native';
 
 import { Checkbox } from '../components/Checkbox';
-import { Body } from '../components/typography';
+import { Body } from '../components/Typography';
 import { colors } from '../constants/colors';
 import { useUser } from '../hooks/useUser';
 import { sdgs } from '../constants/sdgs';

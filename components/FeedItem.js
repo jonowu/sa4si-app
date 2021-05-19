@@ -6,7 +6,7 @@ import { Image } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../constants/colors';
 import { ProfilePicture } from './ProfilePicture';
-import { Body, Heading } from './typography';
+import { Body, Heading } from './Typography';
 
 const Container = styled.TouchableOpacity`
   border-radius: 20px;

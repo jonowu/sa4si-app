@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash';
 
 import { CURRENT_USER_QUERY, useUser } from '../hooks/useUser';
 import { ProfilePicture } from '../components/ProfilePicture';
-import { Body, Subheading } from '../components/typography';
+import { Body, Subheading } from '../components/Typography';
 import { colors } from '../constants/colors';
 
 const SIGN_OUT_MUTATION = gql`
