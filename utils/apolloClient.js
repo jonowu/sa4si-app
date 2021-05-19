@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-const apiEndpoint = process.env.API_ENDPOINT || 'http://localhost:4000/api/graphql';
+const apiEndpoint = process.env.REACT_NATIVE_API_ENDPOINT || 'http://localhost:4000/api/graphql';
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
