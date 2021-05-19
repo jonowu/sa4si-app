@@ -1,13 +1,13 @@
 import { Share } from 'react-native';
 
-const share = async (title) => {
+const share = async (message) => {
   try {
     await Share.share({
-      message: `I made a difference by completing the action "${title}"! Download the #SA4SI app to join me!`,
+      message,
     });
   } catch (error) {
     alert(error.message);
   }
 };
 
-export default share;
+export { share };

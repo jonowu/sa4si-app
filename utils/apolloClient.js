@@ -1,28 +1,28 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
-import { api } from '../data/api';
-
+const apiEndpoint = process.env.API_ENDPOINT || 'http://localhost:4000/api/graphql';
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
-  uri: `${api}/graphql`,
+  uri: apiEndpoint,
+  fetchOptions: {
+    credentials: 'include',
+  },
 });
 
-const authLink = setContext(async (_, { headers }) => {
-  const token = await AsyncStorage.getItem('token');
-  return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : '',
-    },
-  };
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const client = new ApolloClient({
   cache,
-  link: authLink.concat(httpLink),
+  link: from([errorLink, httpLink]),
 });
 
 export default client;

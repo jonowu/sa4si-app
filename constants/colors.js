@@ -1,9 +1,9 @@
 const colors = {
   black: '#000',
   white: '#FFF',
-  blue: '#6FD7F1',
+  blue: '#0384FC',
   red: '#BB000C',
-  green: '#5FECA1',
+  green: '#05ad62',
   purple: '#F18DF6',
   yellow: '#FEEC00', // Swinburne Yellow
   grey: '#D7D5D8', // Swinburne Light Grey
