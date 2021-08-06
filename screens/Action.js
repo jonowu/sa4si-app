@@ -11,6 +11,7 @@ import { share } from '../utils/share';
 import { DocumentRenderer } from '../components/DocumentRenderer';
 import { useUser } from '../hooks/useUser';
 import { GET_USER_ACTIONS } from '../screens/Actions';
+import { GET_COMPLETIONS } from '../screens/Feed';
 
 const HeaderContainer = styled.View`
   display: flex;
@@ -48,8 +49,10 @@ const Action = ({ route, navigation }) => {
 
   const [completeAction] = useMutation(COMPLETE_ACTION_MUTATION, {
     variables: { userId: user.id, actionId: action.id },
-    refetchQueries: [{ query: GET_USER_ACTIONS, variables: { id: user.id } }],
-    onCompleted: () => navigation.goBack(),
+    refetchQueries: [{ query: GET_USER_ACTIONS, variables: { id: user.id } }, { query: GET_COMPLETIONS }],
+    onCompleted: () => {
+      navigation.goBack();
+    },
   });
 
   return (

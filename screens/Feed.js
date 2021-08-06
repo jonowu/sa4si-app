@@ -5,36 +5,33 @@ import { View, ScrollView } from 'react-native';
 import { Body } from '../components/Typography';
 import { FeedItem } from '../components/FeedItem';
 
-const Feed = ({ navigation }) => {
-  /* const buttons = ['Social', 'News'];
-  const [selectedIndex, setSelectedIndex] = useState(0); */
-
-  const GET_COMPLETIONS = gql`
-    query GET_COMPLETIONS {
-      allCompletions {
+const GET_COMPLETIONS = gql`
+  query GET_COMPLETIONS {
+    allCompletions(orderBy: { completionDate: desc }) {
+      id
+      completionDate
+      user {
         id
-        completionDate
-        user {
-          id
-          name
-          profilePicture {
-            publicUrlTransformed
-          }
-        }
-        action {
-          id
-          title
-          image {
-            publicUrlTransformed
-          }
-        }
-        kudos {
-          id
+        name
+        profilePicture {
+          publicUrlTransformed
         }
       }
+      action {
+        id
+        title
+        image {
+          publicUrlTransformed
+        }
+      }
+      kudos {
+        id
+      }
     }
-  `;
+  }
+`;
 
+const Feed = ({ navigation }) => {
   const { loading, error, data = {} } = useQuery(GET_COMPLETIONS);
 
   if (loading) return <Body>Loading...</Body>;
@@ -55,4 +52,4 @@ const Feed = ({ navigation }) => {
   );
 };
 
-export { Feed };
+export { Feed, GET_COMPLETIONS };

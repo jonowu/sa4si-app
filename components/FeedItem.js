@@ -17,6 +17,9 @@ const Container = styled.TouchableOpacity`
 `;
 
 const FeedItem = ({ completion }) => {
+  if (!completion.action) {
+    return null;
+  }
   return (
     <Container disabled>
       {completion.action.image?.publicUrlTransformed ? (
