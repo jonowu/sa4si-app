@@ -47,11 +47,11 @@ const Sdgs = ({ navigation }) => {
   const mergedSdgs = sdgs.map((t1) => ({ ...t1, ...data.allSdgs.find((t2) => t2.sdgNo === t1.sdgNo) }));
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <FlatList
-        style={{ paddingVertical: 5 }}
+        style={{ paddingVertical: '5%', paddingHorizontal: '10%' }}
         data={mergedSdgs}
-        columnWrapperStyle={{ justifyContent: 'space-around' }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
         renderItem={({ item }) => <Item sdg={item} navigation={navigation} />}
         keyExtractor={(item) => item.sdgNo}
         numColumns={2}
