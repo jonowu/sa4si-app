@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components/native';
 
-import { Heading } from '../components/Typography';
+import { Body, Heading } from '../components/Typography';
 import { colors } from '../constants/colors';
 import { Button } from '../components/Button';
 import { ChildScreen } from '../components/ChildScreen';
@@ -66,22 +66,13 @@ const Action = ({ route, navigation }) => {
           )}
         </HeaderRow>
       </HeaderContainer>
-      {content?.document ? <DocumentRenderer document={content.document} /> : null}
-      {/* {relatedSdgs && relatedSdgs.length > 0 && (
-        <View style={{ marginTop: 30, marginBottom: 15 }}>
-          <Subheading bold variant={3}>
-            Related SDGs
-          </Subheading>
-          {relatedSdgs.map((sdg) => (
-            <SdgListItem
-              key={sdg.id}
-              number={sdg.id}
-              onPress={() => navigation.navigate('SDGs', { screen: 'SDG', params: { sdgNo: sdg.id } })}
-              style={{ marginBottom: 5 }}
-            />
-          ))}
-        </View>
-      )} */}
+      {isCompleted && (
+        <Body>
+          Well done on participating in {title}! You can use the share button to encourage your friends and family to
+          take part as well.
+        </Body>
+      )}
+      {!isCompleted && content?.document ? <DocumentRenderer document={content.document} /> : null}
       <View style={{ marginTop: 10 }}>
         {isCompleted ? (
           <Button
